@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Jura:300,400,500,600,700');
 @import url('bootstrap.min.css');
 /* @import url('sticky-header.css');*/
-@import url('font-awesome/css/font-awesome.min.css'); 
 @import url('rotate-wheels.css');
 
 
@@ -10,7 +9,17 @@ body, html {
   
     }
 
-body{ padding:0px; margin:0px; font-size: 16px; font-family: "Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; overflow-x: hidden;  }
+
+    body {
+      padding: 0px;
+      margin: 0px;
+      font-size: 16px;
+      font-family: 'Montserrat', sans-serif !important;
+      /* font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; */
+      overflow-x: hidden;
+    }
+
+/* body{ padding:0px; margin:0px; font-size: 16px; font-family: "Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; overflow-x: hidden;  } */
 header{padding: 0;      -webkit-transition: all 0.5s ease; -moz-transition: position 10s; -ms-transition: position 10s;    -o-transition: position 10s;    transition: all 0.5s ease;    z-index: 999 !important;}
 
 header .navbar{padding: 8px 0px !important}
@@ -105,7 +114,7 @@ opacity: 1;
 position: absolute;
 top: -30px;
 right: -8px;
-padding-bottom: 18px;
+/* padding-bottom: 18px; */
 font-size: 28px; outline: none;
 }
 .modal-new-1 .modal-content .close:hover { border: solid 2px #7107f2; color: #7107f2 !important }
@@ -153,10 +162,14 @@ padding: 0px 19px;
 .previous-hash-information{ font-size: 13px; color: #5b5b5b }
 .block-date-information{ font-size: 11px; color: #908f8f }
 .block-view-content{
-   border: solid 1px #ccc;
-    padding: 2px 9px;
-    border-radius: 17px;
-    color: #9b9999;
+border: solid 1px #ccc;
+padding: 2px 5px;
+border-radius: 17px;
+color: #9b9999;
+font-size: 12px;
+width: 50px;
+float: right;
+margin-top: 4px;
   }
   .line-height{ line-height: 1.2 !important }
 
@@ -252,7 +265,7 @@ body.stop-overflow{ overflow-y:hidden ; }
   color: #fff !important;
   border-radius: 50%;
   font-size: 54px;
-  line-height: 68px;
+  line-height: 78px;
   margin-bottom: -101px;
 }
 
@@ -378,4 +391,150 @@ body.stop-overflow{ overflow-y:hidden ; }
 
 .add-error-color{
   color: red !important;
+}
+
+.block-item{
+  max-width: 100% !important
+}
+
+.block-item img {
+  margin: auto !important
+}
+
+.slick-next:before,
+.slick-prev:before {
+  color: #000 !important;
+}
+
+.slick-next {
+  right: -15px !important;
+}
+
+.slick-prev {
+  left: -15px !important;
+  z-index: 1;
+}
+
+.slick-track{
+  margin: auto;
+}
+
+.block-item:after {
+  content: "";
+  background-color: #807c7c;
+  width: 61px;
+  height: 91px;
+  top: 58px;
+  position: absolute;
+  background: url('../images/chain-100.png');
+  background-repeat: no-repeat;
+  left: -31px;
+  z-index: -99;
+  background-size: contain;
+  text-align: center;
+}
+
+.no-chain:after {
+  background: transparent;
+}
+
+/* .block-item img:hover {
+  border: solid 5px #49bea0 !important;
+} */
+
+.block-item img {
+  margin: auto !important;
+  transition: 0.2s;
+}
+
+.block-item img.errors {
+  border: solid 5px #c40c1f !important;
+}
+
+.block-item img.errors:hover {
+  border: solid 5px #c40c1f !important;
+}
+
+/* .overlay2 {
+  cursor: pointer;
+  margin-top: -104px;
+  border: 1px solid #49bea0;
+  padding: 18px;
+  border-radius: 66px;
+  width: 100px;
+  height: 100px;
+  background: #49bea0;
+  position: absolute;
+  left: 48px;
+  display: none;
+  line-height: 58px;
+} */
+/* 
+.overlay2 .fa-info {
+  font-size: 30px;
+  color: #fff;
+}
+
+.col-xs-3.col-sm-3.col-md-2.block-item:hover img {
+  background: #49bea0;
+  
+}
+
+.col-xs-3.col-sm-3.col-md-2.block-item:hover .overlay2 {
+  display: block;
+} */
+
+
+.overlay2 {
+  cursor: pointer;
+  /* margin-top: -104px; */
+  /* border: 1px solid #49bea0; */
+  padding: 18px;
+  border-radius: 50%;
+ 
+  /* left: 48px; */
+ display: none;  
+  /* line-height: 58px; */
+  text-align: center;
+  font-size: 50px;
+  width: 115px;
+  color: #49bea0;
+  
+}
+
+.myblock {
+  border: solid 2px #ccc;
+  width: 125px;
+  height: 125px;
+  BORDER-RADIUS: 50%;
+  margin:auto;
+  transition: 0.2s;
+  margin-bottom: 6px;
+}
+
+.block-item:hover .overlay2 {
+  display: block
+}
+.block-item:hover img {
+  display: none
+}
+.block-item img{ width:100%; border: 0px}
+
+.block-item:hover .myblock {
+  border: solid 5px #49bea0;
+}
+
+
+/* .block-item  h6{font-size: 13px} */
+.block-item:hover h6 {
+  color: #49bea0
+}
+
+.input-group-prepend button {
+  font-size: 13px;
+}
+.btn-outline-secondary:hover,
+.btn-outline-secondary:focus {
+  background: transparent;
+  color: #000;
 }
