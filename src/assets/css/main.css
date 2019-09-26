@@ -45,7 +45,11 @@ a:hover, a:focus{color: #49bea0; opacity: 0.9; text-decoration: none; }
  /* buttons */ 
 .our-button{background: #49bea0 !important;  color: #fff !important;    font-weight: 500; 	  	transition: 0.5s; border:solid 2px #49bea3 !important; } 
 .our-button:hover, .our-buttons:focus{background: transparent !important;  color: #49bea0 !important; border: solid 2px #49bea0; } 
- .our-button.btn-sm{padding: 2px 12px; font-size: 14px !important; border-radius: 20px} */
+ .our-button.btn-sm {
+   padding: 2px 12px !important;
+   font-size: 14px !important;
+   border-radius: 20px !important;
+ }
   .our-button.btn-md{padding: 8px 20px; font-size: 19px;  border-radius: 25px}  
 .our-button.btn-lg{padding: 7px 25px; font-size: 22px;  border-radius: 30px}
 
@@ -434,6 +438,13 @@ body.stop-overflow{ overflow-y:hidden ; }
   text-align: center;
 }
 
+
+.errorschain:after{
+  background: url('../images/chain-error.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
 .no-chain:after {
   background: transparent;
 }
@@ -454,6 +465,8 @@ body.stop-overflow{ overflow-y:hidden ; }
 .block-item img.errors:hover {
   border: solid 5px #c40c1f !important;
 }
+
+
 
 /* .overlay2 {
   cursor: pointer;
@@ -512,6 +525,10 @@ body.stop-overflow{ overflow-y:hidden ; }
   margin-bottom: 6px;
 }
 
+.myblock.errors{
+  border: solid 2px red;
+}
+
 .block-item:hover .overlay2 {
   display: block
 }
@@ -537,4 +554,32 @@ body.stop-overflow{ overflow-y:hidden ; }
 .btn-outline-secondary:focus {
   background: transparent;
   color: #000;
+}
+
+.mine-link{
+  width: 38px;
+  height: 38px;
+  background: #49bea0;
+  line-height: 38px !important;
+  text-align: center;
+  color: #fff;
+  border-radius: 50%;
+}
+
+.slick-next {
+  right: 0px !important;
+  background: #ccc !important;
+}
+
+.slick-prev {
+  left: 0px !important;
+
+  background: #ccc !important;
+}
+
+.slick-next,
+.slick-prev {
+
+  width: 30px;
+  height: 300px;
 }

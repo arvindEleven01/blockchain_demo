@@ -3,14 +3,15 @@ import Layout from '../components/Layout'
 import crypto from 'crypto';
 import * as moment from 'moment';
 import Slider from "react-slick";
+import $ from 'jquery';
 
 class Landing extends React.Component {
 
   state = {
-    dummy: 0,
+    blockNumberMined: '',
     blocksCount: 0,
     itterationValue: 0,
-    keyword: '',
+    keyword: 'Welcome to Eleven01',
     previous_keyword: '',
     previous_hash_block: '',
     blocks: [{
@@ -30,48 +31,47 @@ class Landing extends React.Component {
       nonce: '6521',
       keywordChanged: false,
       previous_hashChanged: false
-    }
+    },
+    cache_blocks: [{
+      keyword: 'Welcome to Eleven01',
+      previous_hash: 0,
+      hash: '0007caa0eea68563ccdfb0a032cc03ea729bdb62e5e57758b5f7731dee2bf5fcb38',
+      timestamp: 'Mon, Sep 16, 2019 12:15 PM',
+      nonce: '6521',
+      keywordChanged: false,
+      previous_hashChanged: false
+    }]
   }
 
   newBlock = async () => {
-    const previousBlock = [...this.state.blocks]
-    previousBlock[this.state.blocks.length - 1].keyword = this.state.cache.keyword
-    previousBlock[this.state.blocks.length - 1].previous_hash = this.state.cache.previous_hash
-    previousBlock[this.state.blocks.length - 1].hash = this.state.cache.hash
-    previousBlock[this.state.blocks.length - 1].timestamp = this.state.cache.timestamp
-    previousBlock[this.state.blocks.length - 1].nonce = this.state.cache.nonce
-    previousBlock[this.state.blocks.length - 1].keywordChanged = false
-    previousBlock[this.state.blocks.length - 1].previous_hashChanged = false
+    if (this.state.blockNumberMined === '') {
+      const previousBlock = [...this.state.blocks]
+      previousBlock[this.state.blocks.length - 1].keyword = this.state.cache.keyword
+      previousBlock[this.state.blocks.length - 1].previous_hash = this.state.cache.previous_hash
+      previousBlock[this.state.blocks.length - 1].hash = this.state.cache.hash
+      previousBlock[this.state.blocks.length - 1].timestamp = this.state.cache.timestamp
+      previousBlock[this.state.blocks.length - 1].nonce = this.state.cache.nonce
+      previousBlock[this.state.blocks.length - 1].keywordChanged = this.state.cache.keywordChanged
+      previousBlock[this.state.blocks.length - 1].previous_hashChanged = this.state.cache.previous_hashChanged
 
-    await this.setState({
-      blocks: previousBlock
-    })
-    
-    var min = 3;
-    var max = 5;
-    const a = Math.floor(Math.random() * (+max - +min)) + +min; 
-    var nonce = Math.floor(100000 + Math.random() * 900000)
-    nonce = nonce.toString().substring(0, a);
-    const timestamp = moment().format('llll');
-    const pre_hash = this.state.blocks.length
+      await this.setState({
+        blocks: previousBlock,
+        blockNumberMined: ''
+      })
 
-    const hash = crypto.createHash('sha256')
-      .update((pre_hash-1) + this.state.blocks[pre_hash - 1].hash + timestamp + this.state.keyword + this.state.blocks[pre_hash - 1].nonce)
-      .digest('hex');
+      var min = 3;
+      var max = 5;
+      const a = Math.floor(Math.random() * (+max - +min)) + +min;
+      var nonce = Math.floor(100000 + Math.random() * 900000)
+      nonce = nonce.toString().substring(0, a);
+      const timestamp = moment().format('llll');
+      const pre_hash = this.state.blocks.length
 
-    let block = {
-      keyword: this.state.keyword,
-      previous_hash: this.state.cache.hash,
-      hash: '000'+ hash,
-      timestamp: timestamp,
-      nonce: nonce,
-      keywordChanged: false,
-      previous_hashChanged: false
-    }
+      const hash = crypto.createHash('sha256')
+        .update((pre_hash - 1) + this.state.blocks[pre_hash - 1].previous_hash + timestamp + this.state.keyword + this.state.blocks[pre_hash - 1].nonce)
+        .digest('hex');
 
-    await this.setState({
-      blocks: [...this.state.blocks, block],
-      cache: {
+      let block = {
         keyword: this.state.keyword,
         previous_hash: this.state.cache.hash,
         hash: '000' + hash,
@@ -79,9 +79,70 @@ class Landing extends React.Component {
         nonce: nonce,
         keywordChanged: false,
         previous_hashChanged: false
-      },
-      keyword: 'Welcome to Eleven01'
-    })
+      }
+
+      await this.setState({
+        cache_blocks: [...this.state.cache_blocks, block]
+      })
+
+      await this.setState({
+        blocks: [...this.state.blocks, block],
+        cache: {
+          keyword: this.state.keyword,
+          previous_hash: this.state.cache.hash,
+          hash: '000' + hash,
+          timestamp: timestamp,
+          nonce: nonce,
+          keywordChanged: false,
+          previous_hashChanged: false
+        },
+        keyword: 'Welcome to Eleven01'
+      })
+      console.log(this.state.blocks, 'yea')
+
+    } else {
+      var min = 3;
+      var max = 5;
+      const a = Math.floor(Math.random() * (+max - +min)) + +min;
+      var nonce = Math.floor(100000 + Math.random() * 900000)
+      nonce = nonce.toString().substring(0, a);
+      const timestamp = moment().format('llll');
+      const pre_hash = this.state.blocks.length
+
+      const hash = crypto.createHash('sha256')
+        .update((pre_hash - 1) + this.state.blocks[pre_hash - 1].previous_hash + timestamp + this.state.keyword + this.state.blocks[pre_hash - 1].nonce)
+        .digest('hex');
+
+      let block = {
+        keyword: this.state.keyword,
+        previous_hash: this.state.blocks[this.state.blocks.length - 1].hash,
+        hash: '000' + hash,
+        timestamp: timestamp,
+        nonce: nonce,
+        keywordChanged: false,
+        previous_hashChanged: true
+      }
+
+      await this.setState({
+        cache_blocks: [...this.state.cache_blocks, block]
+      })
+
+      await this.setState({
+        blocks: [...this.state.blocks, block],
+        cache: {
+          keyword: this.state.keyword,
+          previous_hash: this.state.blocks[this.state.blocks.length-1].hash,
+          hash: '000' + hash,
+          timestamp: timestamp,
+          nonce: nonce,
+          keywordChanged: false,
+          previous_hashChanged: true
+        },
+        keyword: 'Welcome to Eleven01',
+        blockNumberMined: ''
+      })
+      console.log(this.state.blocks, 'not')
+    }
   }
 
   activeRecord = (int) => {
@@ -89,7 +150,7 @@ class Landing extends React.Component {
   }
 
   handleChange = async (event) => {
-    const block = [...this.state.blocks]
+    const block = JSON.parse(JSON.stringify(this.state.blocks))
 
     if (event.target.value === this.state.cache.keyword) {
       block[this.state.blocks.length - 1].keyword = this.state.cache.keyword
@@ -104,7 +165,7 @@ class Landing extends React.Component {
       block[this.state.blocks.length - 1].keyword = event.target.value
       block[this.state.blocks.length - 1].keywordChanged = true
       const hash = crypto.createHash('sha256')
-        .update(block[this.state.blocks.length - 1] + block[this.state.blocks.length - 1].hash + timestamp + event.target.value + block[this.state.blocks.length - 1].nonce)
+        .update(block[this.state.blocks.length - 1] + block[this.state.blocks.length - 1].previous_hash + timestamp + event.target.value + block[this.state.blocks.length - 1].nonce)
         .digest('hex');
       block[this.state.blocks.length - 1].hash = hash
       this.setState({
@@ -112,59 +173,59 @@ class Landing extends React.Component {
         keyword: event.target.value
       }) 
     }
-
   }
 
-  updateHash = (event) => {
-    const length = this.state.blocks.length
+  mine = async () => {
+    const block = [...this.state.blocks]
+    const cache_block = [...this.state.cache_blocks]
+    var min = 3;
+    var max = 5;
+    const a = Math.floor(Math.random() * (+max - +min)) + +min;
+    var nonce = Math.floor(100000 + Math.random() * 900000)
+    nonce = nonce.toString().substring(0, a);
     const timestamp = moment().format('llll');
+    const pre_hash = this.state.blocks.length
 
-    for (let i = this.state.itterationValue; i < length; i++){
-      const block = [...this.state.blocks]
+    const hash = crypto.createHash('sha256')
+      .update((pre_hash - 1) + this.state.blocks[pre_hash - 1].previous_hash + timestamp + this.state.keyword + this.state.blocks[pre_hash - 1].nonce)
+      .digest('hex');
 
-      if (event.target.value === this.state.previous_keyword) {
-
-        block[this.state.itterationValue].keyword = this.state.previous_keyword
-        block[this.state.itterationValue].hash = this.state.previous_hash_block
-
-        block[i].previous_hash = block[i - 1].hash
-        block[i].keywordChanged = false
-        if (i + 1 !== length) {
-          block[i + 1].previous_hashChanged = false
-        }
-
-        this.setState({
-          blocks: block
-        })  
-        
-      } else {
-        
-        block[this.state.itterationValue].keyword = event.target.value
-        const hash = crypto.createHash('sha256')
-          .update(block[this.state.itterationValue] + block[this.state.itterationValue].hash + timestamp + event.target.value + block[this.state.itterationValue].nonce)
-          .digest('hex');
-        block[this.state.itterationValue].hash = hash
-        block[i].previous_hash = block[i - 1].hash
-
-        // let hash2 = crypto.createHmac('sha256', block[i].hash)
-        //   .update('I love cupcakes')
-        //   .digest('hex');
-        
-        const hash2 = crypto.createHash('sha256')
-          .update(block[this.state.itterationValue] + block[i].hash + block[i].timestamp + block[i].hash + block[i].nonce)
-          .digest('hex');
-
-        block[i].keywordChanged = true
-        if (i + 1 !== length) {
-          block[i + 1].hash = hash2
-          block[i + 1].previous_hashChanged = true
-        }
-
-        this.setState({
-          blocks: block
-        })
-      }
+    if (block[pre_hash - 1].keyword === 'Welcome to Eleven01') {
+      block[pre_hash - 1].keyword = this.state.keyword
+    } else {
+      block[pre_hash - 1].keyword = block[pre_hash - 1].keyword
     }
+    block[pre_hash - 1].previous_hash = this.state.blocks[pre_hash - 1].previous_hash
+    block[pre_hash - 1].hash = '000' + hash
+    block[pre_hash - 1].timestamp = timestamp
+    block[pre_hash - 1].nonce = nonce
+    block[pre_hash - 1].keywordChanged = false
+    block[pre_hash - 1].previous_hashChanged = false
+
+    const cache = {
+      keyword: block[pre_hash - 1].keyword,
+      previous_hash: this.state.blocks[pre_hash - 1].previous_hash,
+      hash: '000' + hash,
+      timestamp: timestamp,
+      nonce: nonce,
+      keywordChanged: false,
+      previous_hashChanged: false
+    }
+
+    cache_block[pre_hash - 1].keyword = block[pre_hash - 1].keyword
+    cache_block[pre_hash - 1].previous_hash = this.state.blocks[pre_hash - 1].previous_hash
+    cache_block[pre_hash - 1].hash = '000' + hash
+    cache_block[pre_hash - 1].timestamp = timestamp
+    cache_block[pre_hash - 1].nonce = nonce
+    cache_block[pre_hash - 1].keywordChanged = false
+    cache_block[pre_hash - 1].previous_hashChanged = false
+
+    await this.setState({
+      block: block,
+      cache: cache,
+      cache_blocks: cache_block,
+      keyword: ''
+    })
   }
 
   setItteration = async (index) => {
@@ -177,68 +238,143 @@ class Landing extends React.Component {
     })
   }
 
-  mine = async () => {
-    const block = [...this.state.blocks]
-    var min = 3;
-    var max = 5;
-    const a = Math.floor(Math.random() * (+max - +min)) + +min;
-    var nonce = Math.floor(100000 + Math.random() * 900000)
-    nonce = nonce.toString().substring(0, a);
+  updateHash = async (event) => { 
+    const length = this.state.blocks.length
     const timestamp = moment().format('llll');
-    const pre_hash = this.state.blocks.length
-
-    const hash = crypto.createHash('sha256')
-      .update((pre_hash-1) + this.state.blocks[pre_hash - 1].hash + timestamp + this.state.keyword + this.state.blocks[pre_hash - 1].nonce)
-      .digest('hex');
-
-
-    block[pre_hash - 1].keyword= this.state.keyword
-    block[pre_hash - 1].previous_hash = this.state.blocks[pre_hash - 1].previous_hash
-    block[pre_hash - 1].hash= '000' + hash
-    block[pre_hash - 1].timestamp= timestamp
-    block[pre_hash - 1].nonce= nonce
-    block[pre_hash - 1].keywordChanged= false
-    block[pre_hash - 1].previous_hashChanged = false
-    
-    const cache_block = {
-      keyword: this.state.keyword,
-      previous_hash: this.state.blocks[pre_hash - 1].previous_hash,
-      hash: '000' + hash,
-      timestamp: timestamp,
-      nonce: nonce,
-      keywordChanged: false,
-      previous_hashChanged: false
+    if (event.target.value === this.state.previous_keyword) {
+      const block = JSON.parse(JSON.stringify(this.state.blocks))
+      const cache_blocks = JSON.parse(JSON.stringify(this.state.cache_blocks))
+      for (let i = this.state.itterationValue; i < length; i++) {
+        block[i].keyword = cache_blocks[i].keyword
+        block[i].previous_hash = cache_blocks[i].previous_hash
+        block[i].hash = cache_blocks[i].hash
+        block[i].timestamp = cache_blocks[i].timestamp
+        block[i].nonce = cache_blocks[i].nonce
+        block[i].keywordChanged = cache_blocks[i].keywordChanged
+        block[i].previous_hashChanged = cache_blocks[i].previous_hashChanged
+      }
+      await this.setState({
+        blocks: block
+      })
+    } else {
+      const block = JSON.parse(JSON.stringify(this.state.blocks))
+      const cache_blocks = JSON.parse(JSON.stringify(this.state.cache_blocks))
+      for (let i = this.state.itterationValue; i < length; i++) {
+        block[this.state.itterationValue].keyword = event.target.value
+        const hash = crypto.createHash('sha256')
+          .update(block[this.state.itterationValue] + block[this.state.itterationValue].previous_hash + timestamp + event.target.value + block[this.state.itterationValue].nonce)
+          .digest('hex');
+        block[this.state.itterationValue].hash = hash
+        if (i === 0) {
+          block[i].previous_hash = 0
+        } else {
+          block[i].previous_hash = block[i - 1].hash
+        }
+        block[i].keywordChanged = true
+        if (cache_blocks[i].hash === block[i].hash) {
+          block[i].previous_hashChanged = false
+        }
+        if (i + 1 !== length) {
+          const hash2 = crypto.createHash('sha256')
+            .update(block[i + 1] + block[i + 1].previous_hash + block[i + 1].timestamp + block[i + 1].hash + block[i + 1].nonce)
+            .digest('hex');
+          block[i + 1].hash = hash2
+          block[i + 1].previous_hashChanged = true
+        }
+      }
+      await this.setState({
+        blocks: block
+      })
+      console.log(this.state.blocks)
     }
-    
-    await this.setState({
-      block: block,
-      cache: cache_block,
-      keyword: ''
-    })
   }
 
-  render() {
+  updateMine = async () => {
+    const block = JSON.parse(JSON.stringify(this.state.blocks))
+    const cache_blocks = JSON.parse(JSON.stringify(this.state.cache_blocks))
+
+    const length = this.state.blocks.length
+    for (let i = this.state.itterationValue; i < length; i++) { 
+      
+      if (i === this.state.itterationValue) {
+        const hash = crypto.createHash('sha256')
+          .update(block[this.state.itterationValue] + block[this.state.itterationValue].previous_hash + block[this.state.itterationValue].timestamp + block[this.state.itterationValue].hash + block[this.state.itterationValue].nonce)
+          .digest('hex');
+        block[this.state.itterationValue].hash = '000' + hash
+        cache_blocks[this.state.itterationValue].hash = '000' + hash
+
+        block[this.state.itterationValue].keywordChanged = false
+        cache_blocks[this.state.itterationValue].keywordChanged = false
+
+        const length = this.state.blocks.length
+        if (this.state.itterationValue + 1 !== length) {
+          block[this.state.itterationValue + 1].previous_hash = '000' + hash
+          cache_blocks[this.state.itterationValue + 1].previous_hash = '000' + hash
+
+          block[this.state.itterationValue + 1].previous_hashChanged = false
+          cache_blocks[this.state.itterationValue + 1].previous_hashChanged = false
+        }
+
+        let id = this.state.itterationValue
+        if (this.state.itterationValue + 1 === length) {
+          id = ''
+        } else {
+          id = this.state.itterationValue
+        }
+        this.setState({
+          blocks: block,
+          cache_blocks: cache_blocks,
+          blockNumberMined: id
+        })
+      } else {
+        if (i + 1 < length) {
+          block[i + 1].previous_hashChanged = true
+        }
+        block[i].keywordChanged = true
+        this.setState({
+          blocks: block
+        })
+      }
+
+    }
+    
+    
+  }
+
+  render()   {
     const settings = {
       dots: false,
       infinite: false,
-      speed: 500,
+      speed: 1000,
       slidesToShow: 5,
-      slidesToScroll: 1
+      slidesToScroll: 5
+      // autoplay: true,
+      // speed: 2000,
+      // autoplaySpeed: 500,
+      // pauseOnHover: true
     };
 
     let blocks = this.state.blocks.map((block, i) => {
       return (
-        // <div className="col-xs-3 col-sm-3 col-md-2 block-item" key={i} onClick={() => this.activeRecord(i)} >
         <div className={
           i === 0 ?
             "col-xs-3 col-sm-3 col-md-2 block-item no-chain "
             :
-            "col-xs-3 col-sm-3 col-md-2 block-item"
-        } key={i} data-toggle="modal"
-          onClick={() => this.setItteration(i)} data-target={"#myModal-" + this.state.itterationValue}>
+            block.previous_hashChanged === true ?
+              "col-xs-3 col-sm-3 col-md-2 block-item errorschain"
+              :
+              "col-xs-3 col-sm-3 col-md-2 block-item"
+        }
+          key={i} data-toggle="modal"
+          onClick={() => this.setItteration(i)} data-backdrop="static" data-keyboard="false" data-target={"#myModal-" + this.state.itterationValue}>
           
-          <div className="myblock">
-          <img src={require("../assets/images/block-3d-1.png")} alt="" />
+          <div className={
+            block.keywordChanged === true ?
+              "myblock errors"
+              :
+              "myblock"
+          }>
+            <img src={require("../assets/images/block-3d-1.png")} alt="" />
             <div className="overlay2"><i className="fa fa-info"></i></div>
           </div>
           {
@@ -319,10 +455,10 @@ class Landing extends React.Component {
                       </div>
                       {
                         this.state.blocks[this.state.blocks.length - 1].keywordChanged ?
-                          <div className="col-md-2">
-                            <div className="block-view-content-two">
+                          <div className="col-md-3 pull-right text-right">
+                            <div className=" ">
                               <a href="#" onClick={this.mine}>
-                                <i className="fa fa-link"></i>
+                                <i className="fa fa-link mine-link"></i>
                               </a>
                             </div>
                           </div>
@@ -388,7 +524,7 @@ class Landing extends React.Component {
                         <input type="text" className="form-control button-right-border-radius" placeholder=""
                           aria-label="Example text with button addon" aria-describedby="button-addon1"
                           name="keyword" onChange={this.updateHash}
-                          value={this.state.blocks[this.state.itterationValue].keyword}
+                          value={this.state.blocks[this.state.itterationValue].keyword }
                         />
                       </div>
                       <div className="input-group my-3 previous-hash-information">
@@ -442,10 +578,10 @@ class Landing extends React.Component {
                         </div>
                           {
                             this.state.blocks[this.state.itterationValue].keywordChanged ? 
-                              <div className="col-md-2">
-                                <div className="block-view-content-two">
-                                <a href="#" onClick={this.mine}>
-                                  <i className="fa fa-link"></i>
+                            <div className="col-md-3 pull-right text-right">
+                                <div className="">
+                                <a href="#" onClick={this.updateMine}>
+                                  <i className="fa fa-link mine-link"></i>
                                 </a> 
                                 </div>
                               </div>
