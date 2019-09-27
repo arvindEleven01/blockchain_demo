@@ -3,7 +3,8 @@ import Layout from '../components/Layout'
 import crypto from 'crypto';
 import * as moment from 'moment';
 import Slider from "react-slick";
-import $ from 'jquery';
+import { Link } from "react-router-dom";
+// import $ from 'jquery';
 
 class Landing extends React.Component {
 
@@ -13,7 +14,6 @@ class Landing extends React.Component {
     itterationValue: 0,
     keyword: 'Welcome to Eleven01',
     previous_keyword: '',
-    previous_hash_block: '',
     blocks: [{
       keyword: 'Welcome to Eleven01',
       previous_hash: 0,
@@ -40,10 +40,20 @@ class Landing extends React.Component {
       nonce: '6521',
       keywordChanged: false,
       previous_hashChanged: false
-    }]
+    }],
+    slideIndex: 0,
+    updateCount: 0
   }
 
   newBlock = async () => {
+    var min = 3;
+    var max = 5;
+    const a = Math.floor(Math.random() * (+max - +min)) + +min;
+    var nonce = Math.floor(100000 + Math.random() * 900000)
+    nonce = nonce.toString().substring(0, a);
+    const timestamp = moment().format('llll');
+    const pre_hash = this.state.blocks.length
+
     if (this.state.blockNumberMined === '') {
       const previousBlock = [...this.state.blocks]
       previousBlock[this.state.blocks.length - 1].keyword = this.state.cache.keyword
@@ -58,13 +68,7 @@ class Landing extends React.Component {
         blocks: previousBlock,
         blockNumberMined: ''
       })
-
-      var min = 3;
-      var max = 5;
-      const a = Math.floor(Math.random() * (+max - +min)) + +min;
-      var nonce = Math.floor(100000 + Math.random() * 900000)
-      nonce = nonce.toString().substring(0, a);
-      const timestamp = moment().format('llll');
+      
       const pre_hash = this.state.blocks.length
 
       const hash = crypto.createHash('sha256')
@@ -99,15 +103,9 @@ class Landing extends React.Component {
         keyword: 'Welcome to Eleven01'
       })
       console.log(this.state.blocks, 'yea')
+      await this.slider.slickGoTo(this.state.blocks.length)
 
     } else {
-      var min = 3;
-      var max = 5;
-      const a = Math.floor(Math.random() * (+max - +min)) + +min;
-      var nonce = Math.floor(100000 + Math.random() * 900000)
-      nonce = nonce.toString().substring(0, a);
-      const timestamp = moment().format('llll');
-      const pre_hash = this.state.blocks.length
 
       const hash = crypto.createHash('sha256')
         .update((pre_hash - 1) + this.state.blocks[pre_hash - 1].previous_hash + timestamp + this.state.keyword + this.state.blocks[pre_hash - 1].nonce)
@@ -233,8 +231,7 @@ class Landing extends React.Component {
       itterationValue: index
     })
     await this.setState({
-      previous_keyword: this.state.blocks[this.state.itterationValue].keyword,
-      previous_hash_block: this.state.blocks[this.state.itterationValue].hash
+      previous_keyword: this.state.cache_blocks[this.state.itterationValue].keyword
     })
   }
 
@@ -292,16 +289,28 @@ class Landing extends React.Component {
   updateMine = async () => {
     const block = JSON.parse(JSON.stringify(this.state.blocks))
     const cache_blocks = JSON.parse(JSON.stringify(this.state.cache_blocks))
+    const timestamp = moment().format('llll');
 
     const length = this.state.blocks.length
     for (let i = this.state.itterationValue; i < length; i++) { 
-      
+      var min = 3;
+      var max = 5;
+      const a = Math.floor(Math.random() * (+max - +min)) + +min;
+      var nonce = Math.floor(100000 + Math.random() * 900000)
+      nonce = nonce.toString().substring(0, a);
+
       if (i === this.state.itterationValue) {
         const hash = crypto.createHash('sha256')
           .update(block[this.state.itterationValue] + block[this.state.itterationValue].previous_hash + block[this.state.itterationValue].timestamp + block[this.state.itterationValue].hash + block[this.state.itterationValue].nonce)
           .digest('hex');
         block[this.state.itterationValue].hash = '000' + hash
         cache_blocks[this.state.itterationValue].hash = '000' + hash
+
+        block[this.state.itterationValue].nonce = nonce
+        cache_blocks[this.state.itterationValue].nonce = nonce
+
+        block[this.state.itterationValue].timestamp = timestamp
+        cache_blocks[this.state.itterationValue].timestamp = timestamp
 
         block[this.state.itterationValue].keywordChanged = false
         cache_blocks[this.state.itterationValue].keywordChanged = false
@@ -327,18 +336,25 @@ class Landing extends React.Component {
           blockNumberMined: id
         })
       } else {
+
+        const hash = crypto.createHash('sha256')
+          .update(block[i] + block[i].previous_hash + block[i].timestamp + block[i].hash + block[i].nonce)
+          .digest('hex');
+
+        block[i].hash = hash
+        block[i].previous_hash = block[i - 1].hash
+        block[i].nonce = nonce
+        block[i].timestamp = timestamp
         if (i + 1 < length) {
           block[i + 1].previous_hashChanged = true
         }
         block[i].keywordChanged = true
-        this.setState({
+        await this.setState({
           blocks: block
         })
+        //update cache_block as well
       }
-
     }
-    
-    
   }
 
   render()   {
@@ -347,11 +363,10 @@ class Landing extends React.Component {
       infinite: false,
       speed: 1000,
       slidesToShow: 5,
-      slidesToScroll: 5
-      // autoplay: true,
-      // speed: 2000,
-      // autoplaySpeed: 500,
-      // pauseOnHover: true
+      slidesToScroll: 5,
+      afterChange: () =>
+        this.setState(state => ({ updateCount: state.updateCount + 1 })),
+      beforeChange: (current, next) => this.setState({ slideIndex: next })
     };
 
     let blocks = this.state.blocks.map((block, i) => {
@@ -448,8 +463,11 @@ class Landing extends React.Component {
                             :
                             'BLOCK #' + (this.state.blocks.length-1)
                           }
-                        <span className="block-date-information timestamp">
-                            &nbsp;on {this.state.blocks[this.state.blocks.length - 1].timestamp}
+                          &nbsp;&nbsp;&nbsp;
+                          <span className="block-date-information ">
+                            <span className="timestamp">
+                            on {this.state.blocks[this.state.blocks.length - 1].timestamp}
+                          </span>
                           </span>
                         </h4>
                       </div>
@@ -457,9 +475,9 @@ class Landing extends React.Component {
                         this.state.blocks[this.state.blocks.length - 1].keywordChanged ?
                           <div className="col-md-3 pull-right text-right">
                             <div className=" ">
-                              <a href="#" onClick={this.mine}>
+                              <Link to="#" onClick={this.mine}>
                                 <i className="fa fa-link mine-link"></i>
-                              </a>
+                              </Link>
                             </div>
                           </div>
                           :
@@ -472,9 +490,9 @@ class Landing extends React.Component {
                     </div>
                     <div className="row">
                       <div className="col-md-12">
-                        <a className="btn btn-default our-button circle-button" href="#" onClick={this.newBlock} title="">
+                        <Link className="btn btn-default our-button circle-button" to="#" onClick={this.newBlock} title="">
                           <i className="fa fa-plus"></i>
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -489,17 +507,17 @@ class Landing extends React.Component {
               <div id="demo" className="carousel slide container no-scroll" data-ride="carousel" data-interval="false" data-wrap="false">
                 <div className="container carousel-inner no-padding ">
                   <div className="carousel-item active">
-                    <Slider {...settings}>
+                    <Slider ref={slider => (this.slider = slider)} {...settings}>
                       {blocks}
                     </Slider>
                   </div>
                 </div>
-                <a className="carousel-control-prev" href="#demo" data-slide="prev">
+                <Link className="carousel-control-prev" to="#demo" data-slide="prev">
                   <span className="carousel-control-prev-icon"></span>
-                </a>
-                <a className="carousel-control-next" href="#demo" data-slide="next">
+                </Link>
+                <Link className="carousel-control-next" to="#demo" data-slide="next">
                   <span className="carousel-control-next-icon"></span>
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -580,9 +598,9 @@ class Landing extends React.Component {
                             this.state.blocks[this.state.itterationValue].keywordChanged ? 
                             <div className="col-md-3 pull-right text-right">
                                 <div className="">
-                                <a href="#" onClick={this.updateMine}>
+                                <Link to="#" onClick={this.updateMine}>
                                   <i className="fa fa-link mine-link"></i>
-                                </a> 
+                                </Link> 
                                 </div>
                               </div>
                             :

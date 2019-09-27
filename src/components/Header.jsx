@@ -46,7 +46,7 @@ const steps = [
     position: 'bottom',
   },
   {
-    selector: '.container',
+    selector: '.second',
     content: 'This is my second Step',
   },
   {
