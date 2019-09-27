@@ -42,8 +42,13 @@ class Header extends React.Component {
 const steps = [  
   {
     selector: '.navbar-brand',
-    content: 'This is my first Step',
+    content: () => (
+      <div>
+        <Link to="" className="navbar-brand" href="#"><img src={require("../assets/images/eleven01.png")} alt='' /></Link>
+      </div>
+    ),
     position: 'bottom',
+    stepInteraction: false
   },
   {
     selector: '.second',
