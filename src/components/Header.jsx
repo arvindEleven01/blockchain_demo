@@ -18,6 +18,10 @@ class Header extends React.Component {
     this.setState({ isTourOpen: true })
   }
 
+  // componentDidMount() {
+  //   this.setState({ isTourOpen: true })
+  // }
+
   render() {
     return (
       <header>
@@ -44,7 +48,11 @@ const steps = [
     selector: '.navbar-brand',
     content: () => (
       <div>
-        <Link to="" className="navbar-brand" href="#"><img src={require("../assets/images/eleven01.png")} alt='' /></Link>
+        <p>A blockchain is a distributed database secured by cryptography. It is the technology behind Bitcoin.</p>
+
+        <p>This demo will guide you through the blockchain step-by-step. This demo is also covered in this Medium article with freeCodeCamp. For an understanding of cryptocurrency transactions, checkout Coin Demo.</p>
+
+        <p>To jump between steps, hover on the title of this dialog and select a step.</p>
       </div>
     ),
     position: 'bottom',

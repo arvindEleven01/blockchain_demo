@@ -12,7 +12,7 @@ class Landing extends React.Component {
     blockNumberMined: '',
     blocksCount: 0,
     itterationValue: 0,
-    keyword: 'Welcome to Eleven01',
+    keyword: '',
     previous_keyword: '',
     blocks: [{
       keyword: 'Welcome to Eleven01',
@@ -55,34 +55,45 @@ class Landing extends React.Component {
     const pre_hash = this.state.blocks.length
 
     if (this.state.blockNumberMined === '') {
-      const previousBlock = [...this.state.blocks]
-      previousBlock[this.state.blocks.length - 1].keyword = this.state.cache.keyword
-      previousBlock[this.state.blocks.length - 1].previous_hash = this.state.cache.previous_hash
-      previousBlock[this.state.blocks.length - 1].hash = this.state.cache.hash
-      previousBlock[this.state.blocks.length - 1].timestamp = this.state.cache.timestamp
-      previousBlock[this.state.blocks.length - 1].nonce = this.state.cache.nonce
-      previousBlock[this.state.blocks.length - 1].keywordChanged = this.state.cache.keywordChanged
-      previousBlock[this.state.blocks.length - 1].previous_hashChanged = this.state.cache.previous_hashChanged
+      // const previousBlock = [...this.state.blocks]
+      // previousBlock[this.state.blocks.length - 1].keyword = this.state.cache.keyword
+      // previousBlock[this.state.blocks.length - 1].previous_hash = this.state.cache.previous_hash
+      // previousBlock[this.state.blocks.length - 1].hash = this.state.cache.hash
+      // previousBlock[this.state.blocks.length - 1].timestamp = this.state.cache.timestamp
+      // previousBlock[this.state.blocks.length - 1].nonce = this.state.cache.nonce
+      // previousBlock[this.state.blocks.length - 1].keywordChanged = this.state.cache.keywordChanged
+      // previousBlock[this.state.blocks.length - 1].previous_hashChanged = this.state.cache.previous_hashChanged
 
-      await this.setState({
-        blocks: previousBlock,
-        blockNumberMined: ''
-      })
+      // await this.setState({
+      //   blocks: previousBlock,
+      //   blockNumberMined: ''
+      // })
       
       const pre_hash = this.state.blocks.length
 
       const hash = crypto.createHash('sha256')
         .update((pre_hash - 1) + this.state.blocks[pre_hash - 1].previous_hash + timestamp + this.state.keyword + this.state.blocks[pre_hash - 1].nonce)
         .digest('hex');
+      
+      let keywordChanged
+      let previous_hashChanged
+
+      if (this.state.blocks[pre_hash - 1].keywordChanged === true) {
+        keywordChanged = false
+        previous_hashChanged = true
+      } else {
+        keywordChanged = false
+        previous_hashChanged = false
+      }
 
       let block = {
-        keyword: this.state.keyword,
-        previous_hash: this.state.cache.hash,
+        keyword: '',
+        previous_hash: this.state.blocks[pre_hash - 1].hash,
         hash: '000' + hash,
         timestamp: timestamp,
         nonce: nonce,
-        keywordChanged: false,
-        previous_hashChanged: false
+        keywordChanged: keywordChanged,
+        previous_hashChanged: previous_hashChanged
       }
 
       await this.setState({
@@ -92,15 +103,15 @@ class Landing extends React.Component {
       await this.setState({
         blocks: [...this.state.blocks, block],
         cache: {
-          keyword: this.state.keyword,
-          previous_hash: this.state.cache.hash,
+          keyword: '',
+          previous_hash: this.state.blocks[pre_hash - 1].hash,
           hash: '000' + hash,
           timestamp: timestamp,
           nonce: nonce,
-          keywordChanged: false,
-          previous_hashChanged: false
+          keywordChanged: keywordChanged,
+          previous_hashChanged: previous_hashChanged
         },
-        keyword: 'Welcome to Eleven01'
+        keyword: ''
       })
       console.log(this.state.blocks, 'yea')
       await this.slider.slickGoTo(this.state.blocks.length)
@@ -110,15 +121,22 @@ class Landing extends React.Component {
       const hash = crypto.createHash('sha256')
         .update((pre_hash - 1) + this.state.blocks[pre_hash - 1].previous_hash + timestamp + this.state.keyword + this.state.blocks[pre_hash - 1].nonce)
         .digest('hex');
+      
+      let previous_hashChanged
+      if (this.state.blocks[this.state.blocks.length - 1].keywordChanged === true) {
+        previous_hashChanged = true
+      } else {
+        previous_hashChanged = false
+      }
 
       let block = {
-        keyword: this.state.keyword,
+        keyword: '',
         previous_hash: this.state.blocks[this.state.blocks.length - 1].hash,
         hash: '000' + hash,
         timestamp: timestamp,
         nonce: nonce,
         keywordChanged: false,
-        previous_hashChanged: true
+        previous_hashChanged: previous_hashChanged
       }
 
       await this.setState({
@@ -128,15 +146,15 @@ class Landing extends React.Component {
       await this.setState({
         blocks: [...this.state.blocks, block],
         cache: {
-          keyword: this.state.keyword,
+          keyword: '',
           previous_hash: this.state.blocks[this.state.blocks.length-1].hash,
           hash: '000' + hash,
           timestamp: timestamp,
           nonce: nonce,
           keywordChanged: false,
-          previous_hashChanged: true
+          previous_hashChanged: previous_hashChanged
         },
-        keyword: 'Welcome to Eleven01',
+        keyword: '',
         blockNumberMined: ''
       })
       console.log(this.state.blocks, 'not')
@@ -197,8 +215,17 @@ class Landing extends React.Component {
     block[pre_hash - 1].hash = '000' + hash
     block[pre_hash - 1].timestamp = timestamp
     block[pre_hash - 1].nonce = nonce
-    block[pre_hash - 1].keywordChanged = false
+
+    let keywordChanged
+    if (block[pre_hash - 2].keywordChanged === true) {
+      keywordChanged = true
+    } else {
+      keywordChanged = false
+    }
+
+    block[pre_hash - 1].keywordChanged = keywordChanged
     block[pre_hash - 1].previous_hashChanged = false
+    
 
     const cache = {
       keyword: block[pre_hash - 1].keyword,
@@ -206,7 +233,7 @@ class Landing extends React.Component {
       hash: '000' + hash,
       timestamp: timestamp,
       nonce: nonce,
-      keywordChanged: false,
+      keywordChanged: keywordChanged,
       previous_hashChanged: false
     }
 
@@ -215,7 +242,7 @@ class Landing extends React.Component {
     cache_block[pre_hash - 1].hash = '000' + hash
     cache_block[pre_hash - 1].timestamp = timestamp
     cache_block[pre_hash - 1].nonce = nonce
-    cache_block[pre_hash - 1].keywordChanged = false
+    cache_block[pre_hash - 1].keywordChanged = keywordChanged
     cache_block[pre_hash - 1].previous_hashChanged = false
 
     await this.setState({
@@ -239,20 +266,39 @@ class Landing extends React.Component {
     const length = this.state.blocks.length
     const timestamp = moment().format('llll');
     if (event.target.value === this.state.previous_keyword) {
+      console.log('on update', this.state.cache_blocks)
       const block = JSON.parse(JSON.stringify(this.state.blocks))
       const cache_blocks = JSON.parse(JSON.stringify(this.state.cache_blocks))
       for (let i = this.state.itterationValue; i < length; i++) {
         block[i].keyword = cache_blocks[i].keyword
-        block[i].previous_hash = cache_blocks[i].previous_hash
+        
+        // if (i + 1 !== length) {
+        //   block[i+1].previous_hash = cache_blocks[i].hash
+        //   const hash2 = crypto.createHash('sha256')
+        //     .update(block[i] + block[i].previous_hash + block[i].timestamp + block[i].hash + block[i].nonce)
+        //     .digest('hex');
+        //   block[i + 1].hash = hash2
+        //   block[i + 1].keywordChanged = true
+        // }
+        
         block[i].hash = cache_blocks[i].hash
+        if (i === 0) {
+          block[i].previous_hash = 0
+          block[i].keywordChanged = cache_blocks[i].keywordChanged
+        } else {
+          block[i].previous_hash = cache_blocks[i - 1].hash
+          block[i].keywordChanged = cache_blocks[i - 1].keywordChanged
+        }
+
         block[i].timestamp = cache_blocks[i].timestamp
         block[i].nonce = cache_blocks[i].nonce
-        block[i].keywordChanged = cache_blocks[i].keywordChanged
         block[i].previous_hashChanged = cache_blocks[i].previous_hashChanged
+
       }
       await this.setState({
         blocks: block
       })
+      console.log(this.state.blocks)
     } else {
       const block = JSON.parse(JSON.stringify(this.state.blocks))
       const cache_blocks = JSON.parse(JSON.stringify(this.state.cache_blocks))
@@ -312,6 +358,13 @@ class Landing extends React.Component {
         block[this.state.itterationValue].timestamp = timestamp
         cache_blocks[this.state.itterationValue].timestamp = timestamp
 
+        if (block[this.state.itterationValue].keywordChanged === true) {
+          if (this.state.itterationValue + 1 < this.state.blocks.length) {
+            block[this.state.itterationValue + 1].previous_hashChanged = true
+            cache_blocks[this.state.itterationValue + 1].previous_hashChanged = true
+          }
+        }
+
         block[this.state.itterationValue].keywordChanged = false
         cache_blocks[this.state.itterationValue].keywordChanged = false
 
@@ -342,17 +395,28 @@ class Landing extends React.Component {
           .digest('hex');
 
         block[i].hash = hash
+        cache_blocks[i].hash = hash
+
         block[i].previous_hash = block[i - 1].hash
+        cache_blocks[i].previous_hash = block[i - 1].hash
+
         block[i].nonce = nonce
+        cache_blocks[i].nonce = nonce
+
         block[i].timestamp = timestamp
+        cache_blocks[i].timestamp = timestamp
+
         if (i + 1 < length) {
           block[i + 1].previous_hashChanged = true
+          cache_blocks[i + 1].previous_hashChanged = true
         }
         block[i].keywordChanged = true
+        cache_blocks[i].keywordChanged = true
+
         await this.setState({
-          blocks: block
+          blocks: block,
+          cache_blocks  
         })
-        //update cache_block as well
       }
     }
   }
@@ -375,7 +439,7 @@ class Landing extends React.Component {
           i === 0 ?
             "col-xs-3 col-sm-3 col-md-2 block-item no-chain "
             :
-            block.previous_hashChanged === true ?
+            block.previous_hashChanged === true && block.keywordChanged === true ?
               "col-xs-3 col-sm-3 col-md-2 block-item errorschain"
               :
               "col-xs-3 col-sm-3 col-md-2 block-item"
