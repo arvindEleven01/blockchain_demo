@@ -629,3 +629,7 @@ button.reactour__dot.reactour__dot--is-active.sc-htoDjs.jnTUqj {
 .sc-EHOje {
   background-color: #49bea0 !important;
 }
+
+body.overflow-hidden {
+  overflow: hidden;
+}

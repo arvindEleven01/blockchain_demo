@@ -9,13 +9,16 @@ class Header extends React.Component {
   }
 
   closeTour = () => {
+    document.body.classList.remove('overflow-hidden')
+
     this.setState({
       isTourOpen: false
     })
   }
 
   tourStart = () => {
-    this.setState({ isTourOpen: true })
+    document.body.classList.add('overflow-hidden')
+    this.setState({ isTourOpen: true })           
   }
 
   // componentDidMount() {

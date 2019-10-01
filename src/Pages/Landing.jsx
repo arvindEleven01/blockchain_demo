@@ -266,34 +266,32 @@ class Landing extends React.Component {
     const length = this.state.blocks.length
     const timestamp = moment().format('llll');
     if (event.target.value === this.state.previous_keyword) {
-      console.log('on update', this.state.cache_blocks)
+      console.log('on update', this.state.itterationValue)
       const block = JSON.parse(JSON.stringify(this.state.blocks))
       const cache_blocks = JSON.parse(JSON.stringify(this.state.cache_blocks))
       for (let i = this.state.itterationValue; i < length; i++) {
-        block[i].keyword = cache_blocks[i].keyword
-        
-        // if (i + 1 !== length) {
-        //   block[i+1].previous_hash = cache_blocks[i].hash
-        //   const hash2 = crypto.createHash('sha256')
-        //     .update(block[i] + block[i].previous_hash + block[i].timestamp + block[i].hash + block[i].nonce)
-        //     .digest('hex');
-        //   block[i + 1].hash = hash2
-        //   block[i + 1].keywordChanged = true
-        // }
-        
-        block[i].hash = cache_blocks[i].hash
-        if (i === 0) {
+        if (i === this.state.itterationValue) {
+          console.log('i',i)
+          block[i].keyword = cache_blocks[i].keyword
+          block[i].hash = cache_blocks[i].hash
           block[i].previous_hash = 0
+          block[i].timestamp = cache_blocks[i].timestamp
+          block[i].nonce = cache_blocks[i].nonce
           block[i].keywordChanged = cache_blocks[i].keywordChanged
+          block[i].previous_hashChanged = cache_blocks[i].previous_hashChanged
         } else {
+          console.log('ye', i)
+          block[i].keyword = cache_blocks[i].keyword
+          const hash2 = crypto.createHash('sha256')
+            .update(i + block[i].previous_hash + block[i].timestamp + block[i].hash + block[i].nonce)
+            .digest('hex');
+          block[i].hash = hash2
           block[i].previous_hash = cache_blocks[i - 1].hash
-          block[i].keywordChanged = cache_blocks[i - 1].keywordChanged
+          block[i].timestamp = cache_blocks[i].timestamp
+          block[i].nonce = cache_blocks[i].nonce
+          block[i].keywordChanged = true
+          block[i].previous_hashChanged = false
         }
-
-        block[i].timestamp = cache_blocks[i].timestamp
-        block[i].nonce = cache_blocks[i].nonce
-        block[i].previous_hashChanged = cache_blocks[i].previous_hashChanged
-
       }
       await this.setState({
         blocks: block
