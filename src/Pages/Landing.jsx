@@ -216,15 +216,16 @@ class Landing extends React.Component {
     block[pre_hash - 1].timestamp = timestamp
     block[pre_hash - 1].nonce = nonce
 
-    let keywordChanged
+    let keywordChanged = false
+    let previous_hashChanged
     if (block[pre_hash - 2].keywordChanged === true) {
-      keywordChanged = true
+      previous_hashChanged = true
     } else {
-      keywordChanged = false
+      previous_hashChanged = false
     }
 
     block[pre_hash - 1].keywordChanged = keywordChanged
-    block[pre_hash - 1].previous_hashChanged = false
+    block[pre_hash - 1].previous_hashChanged = previous_hashChanged
     
 
     const cache = {
@@ -234,7 +235,7 @@ class Landing extends React.Component {
       timestamp: timestamp,
       nonce: nonce,
       keywordChanged: keywordChanged,
-      previous_hashChanged: false
+      previous_hashChanged: previous_hashChanged
     }
 
     cache_block[pre_hash - 1].keyword = block[pre_hash - 1].keyword
@@ -243,7 +244,7 @@ class Landing extends React.Component {
     cache_block[pre_hash - 1].timestamp = timestamp
     cache_block[pre_hash - 1].nonce = nonce
     cache_block[pre_hash - 1].keywordChanged = keywordChanged
-    cache_block[pre_hash - 1].previous_hashChanged = false
+    cache_block[pre_hash - 1].previous_hashChanged = previous_hashChanged
 
     await this.setState({
       block: block,

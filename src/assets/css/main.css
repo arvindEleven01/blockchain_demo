@@ -633,3 +633,9 @@ button.reactour__dot.reactour__dot--is-active.sc-htoDjs.jnTUqj {
 body.overflow-hidden {
   overflow: hidden;
 }
+
+.navbar-brand {
+  background: #fff;
+  padding: 1.5em 1.6em;
+  margin-top: -1em;
+}

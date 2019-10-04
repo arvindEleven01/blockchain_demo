@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "a11y-checker": "^2.2.1",
+    "babel-polyfill": "^6.26.0",
     "bootstrap": "^4.3.1",
     "crypto-js": "^3.1.9-1",
     "font-awesome": "^4.7.0",
@@ -11,12 +13,30 @@
     "popper.js": "^1.15.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
+    "react-joyride": "^2.1.1",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.1.1",
     "react-slick": "^0.25.2",
     "reactour": "^1.15.0",
     "slick-carousel": "^1.8.1",
-    "styled-components": "^4.3.2"
+    "styled-components": "^4.3.2",
+    "typescript": "^3.5.3"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.15",
+    "@types/node": "^12.6.2",
+    "@types/react": "^16.8.23",
+    "@types/react-burger-menu": "^2.2.5",
+    "@types/react-dom": "^16.8.4",
+    "@types/react-intl": "^2.3.18",
+    "@types/react-modal": "^3.8.2",
+    "@types/react-router-dom": "^4.3.4",
+    "@types/react-select": "^3.0.0",
+    "@types/styled-components": "^4.1.18",
+    "tslint": "^5.18.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-react": "^4.0.0",
+    "ally.js": "^1.4.1"
   },
   "scripts": {
     "start": "react-scripts start",
