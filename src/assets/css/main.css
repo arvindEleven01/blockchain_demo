@@ -639,3 +639,7 @@ body.overflow-hidden {
   padding: 1.5em 1.6em;
   margin-top: -1em;
 }
+.genesis {
+  display: inline-block;
+      margin-right: 15px;
+}

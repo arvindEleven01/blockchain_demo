@@ -275,23 +275,40 @@ class Landing extends React.Component {
           console.log('i',i)
           block[i].keyword = cache_blocks[i].keyword
           block[i].hash = cache_blocks[i].hash
-          block[i].previous_hash = 0
+          if (i === 0) {
+            block[i].previous_hash = 0
+          } else {
+            block[i].previous_hash = cache_blocks[i - 1].hash
+          }
           block[i].timestamp = cache_blocks[i].timestamp
           block[i].nonce = cache_blocks[i].nonce
           block[i].keywordChanged = cache_blocks[i].keywordChanged
           block[i].previous_hashChanged = cache_blocks[i].previous_hashChanged
         } else {
           console.log('ye', i)
+          if (block[i + 1].keywordChanged === true) {
+            console.log('equal')
+            const hash2 = crypto.createHash('sha256')
+              .update(i + block[i].previous_hash + block[i].timestamp + block[i].hash + block[i].nonce)
+              .digest('hex');
+            block[i+1].hash = hash2
+            block[i+1].keywordChanged = true
+            block[i+1].previous_hashChanged = false 
+          } else if (block[i].keywordChanged === false) {
+            console.log('not', block[i - 1].keywordChanged)
+            block[i].hash = cache_blocks[i].hash
+            block[i].keywordChanged = false
+            block[i].previous_hashChanged = false
+          }
           block[i].keyword = cache_blocks[i].keyword
-          const hash2 = crypto.createHash('sha256')
-            .update(i + block[i].previous_hash + block[i].timestamp + block[i].hash + block[i].nonce)
-            .digest('hex');
-          block[i].hash = hash2
-          block[i].previous_hash = cache_blocks[i - 1].hash
+          if (i===0) {
+            block[i].previous_hash = 0
+          } else {
+            block[i].previous_hash = cache_blocks[i - 1].hash
+          }
           block[i].timestamp = cache_blocks[i].timestamp
           block[i].nonce = cache_blocks[i].nonce
-          block[i].keywordChanged = true
-          block[i].previous_hashChanged = false
+           
         }
       }
       await this.setState({
@@ -470,95 +487,97 @@ class Landing extends React.Component {
         <section className="main-content d-flex align-items-center justify-content-center create-block">
           <div className="container">
             <div className="col-sm-12 col-md-12 p-0 mx-auto ">
-              <div className="col-md-12 col-lg-7 second mx-auto text-center border  px-0   box-1 effect5 py-5">
-                <div className="px-4">
-                  <div>
-                    <div className="input-group mb-3">
-                      <div className="input-group-prepend">
-                        <button className="btn btn-outline-secondary button-left-border-radius px-3" type="button" id="button-addon1">DATA</button>
-                        <button className="btn btn-outline-secondary " type="button" id="button-addon1"><i className="fa fa-file"></i></button>
+              <div className="col-md-12 col-lg-12 second">
+                <div className="col-md-12 col-lg-7 third mx-auto text-center border  px-0   box-1 effect5 py-5">
+                  <div className="px-4">
+                    <div>
+                      <div className="input-group mb-3">
+                        <div className="input-group-prepend">
+                          <button className="btn btn-outline-secondary button-left-border-radius px-3" type="button" id="button-addon1">DATA</button>
+                          <button className="btn btn-outline-secondary " type="button" id="button-addon1"><i className="fa fa-file"></i></button>
+                        </div>
+                        <input type="text" className="form-control button-right-border-radius data-block" placeholder=""
+                          aria-label="Example text with button addon" aria-describedby="button-addon1"
+                          name="keyword" onChange={this.handleChange} value={this.state.blocks[this.state.blocks.length - 1].keyword}
+                        />
                       </div>
-                      <input type="text" className="form-control button-right-border-radius" placeholder=""
-                        aria-label="Example text with button addon" aria-describedby="button-addon1"
-                        name="keyword" onChange={this.handleChange} value={this.state.blocks[this.state.blocks.length-1].keyword}
-                      />
-                    </div>
-                    <div className="input-group mb-3 previous-hash-information">
-                      PREVIOUS HASH: &nbsp;
+                      <div className="input-group mb-3 previous-hash-information">
+                        PREVIOUS HASH: &nbsp;
                         <span id="previous-hash" className={
-                        this.state.blocks[this.state.blocks.length - 1].previous_hashChanged ?
-                          'add-error-color'
-                          :
-                          ''
-                      }>
-                        {this.state.blocks[this.state.blocks.length - 1].previous_hash}
-                      </span>
-                    </div>
-                    <div className="input-group mb-3 hash-input">
-                      <div className="input-group-prepend ">
-                        <button
+                          this.state.blocks[this.state.blocks.length - 1].previous_hashChanged ?
+                            'add-error-color'
+                            :
+                            ''
+                        }>
+                          {this.state.blocks[this.state.blocks.length - 1].previous_hash}
+                        </span>
+                      </div>
+                      <div className="input-group mb-3 hash-input">
+                        <div className="input-group-prepend ">
+                          <button
+                            className={
+                              this.state.blocks[this.state.blocks.length - 1].keywordChanged ?
+                                "btn btn-outline-secondary button-left-border-radius px-3 add-red"
+                                :
+                                "btn btn-outline-secondary button-left-border-radius px-3"
+                            }
+                            id="button-addon1">HASH</button>
+                        </div>
+                        <input type="text" disabled
                           className={
                             this.state.blocks[this.state.blocks.length - 1].keywordChanged ?
-                              "btn btn-outline-secondary button-left-border-radius px-3 add-red"
+                              "form-control button-right-border-radius add-red"
                               :
-                              "btn btn-outline-secondary button-left-border-radius px-3"
+                              "form-control button-right-border-radius"
                           }
-                          id="button-addon1">HASH</button>
+                          placeholder="" aria-label="Example text with button addon"
+                          aria-describedby="button-addon1"
+                          value={this.state.blocks[this.state.blocks.length - 1].hash}
+                        />
                       </div>
-                      <input type="text" disabled
-                        className={
-                          this.state.blocks[this.state.blocks.length - 1].keywordChanged ?
-                            "form-control button-right-border-radius add-red"
-                            :
-                            "form-control button-right-border-radius"
-                        }
-                        placeholder="" aria-label="Example text with button addon"
-                        aria-describedby="button-addon1"
-                        value={this.state.blocks[this.state.blocks.length - 1].hash}
-                      />
-                    </div>
-                    <div className="row">
-                      <div className="col-md-9 text-left">
-                        <h4 className="mb-0 line-height genesis">
-                          {
-                            this.state.blocks.length === 1 ?
-                            'GENESIS BLOCK'
-                            :
-                            'BLOCK #' + (this.state.blocks.length-1)
-                          }
-                          &nbsp;&nbsp;&nbsp;
+                      <div className="row">
+                        <div className="col-md-9 text-left">
+                          <h4 className="mb-0 line-height genesis">
+                            {
+                              this.state.blocks.length === 1 ?
+                                'GENESIS BLOCK'
+                                :
+                                'BLOCK #' + (this.state.blocks.length - 1)
+                            }
+                          </h4>
                           <span className="block-date-information ">
                             <span className="timestamp">
-                            on {this.state.blocks[this.state.blocks.length - 1].timestamp}
+                              on {this.state.blocks[this.state.blocks.length - 1].timestamp}
+                            </span>
                           </span>
-                          </span>
-                        </h4>
+                        </div>
+                        {
+                          this.state.blocks[this.state.blocks.length - 1].keywordChanged ?
+                            <div className="col-md-3 pull-right text-right">
+                              <div className=" ">
+                                <Link to="#" onClick={this.mine}>
+                                  <i className="fa fa-link mine-link"></i>
+                                </Link>
+                              </div>
+                            </div>
+                            :
+                            <div className="col-md-3">
+                              <div className="block-view-content nonce-block">
+                                {this.state.blocks[this.state.blocks.length - 1].nonce}
+                              </div>
+                            </div>
+                        }
                       </div>
-                      {
-                        this.state.blocks[this.state.blocks.length - 1].keywordChanged ?
-                          <div className="col-md-3 pull-right text-right">
-                            <div className=" ">
-                              <Link to="#" onClick={this.mine}>
-                                <i className="fa fa-link mine-link"></i>
-                              </Link>
-                            </div>
-                          </div>
-                          :
-                          <div className="col-md-3">
-                            <div className="block-view-content">
-                              {this.state.blocks[this.state.blocks.length - 1].nonce}
-                            </div>
-                          </div>
-                      }
-                    </div>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <Link className="btn btn-default our-button circle-button" to="#" onClick={this.newBlock} title="">
-                          <i className="fa fa-plus"></i>
-                        </Link>
+                      <div className="row">
+                        <div className="col-md-12">
+                          <Link className="btn btn-default our-button circle-button add-block" to="#" onClick={this.newBlock} title="">
+                            <i className="fa fa-plus"></i>
+                          </Link>
+                        </div>
                       </div>
                     </div>
                   </div>
+
                 </div>
               </div>
             </div>
