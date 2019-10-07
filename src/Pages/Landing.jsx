@@ -21,7 +21,8 @@ class Landing extends React.Component {
       timestamp: 'Mon, Sep 16, 2019 12:15 PM',
       nonce: '6521',
       keywordChanged: false,
-      previous_hashChanged: false
+      previous_hashChanged: false,
+      newBlockOnError: false
     }],
     cache: {
       keyword: 'Welcome to Eleven01',
@@ -30,7 +31,8 @@ class Landing extends React.Component {
       timestamp: 'Mon, Sep 16, 2019 12:15 PM',
       nonce: '6521',
       keywordChanged: false,
-      previous_hashChanged: false
+      previous_hashChanged: false,
+      newBlockOnError: false
     },
     cache_blocks: [{
       keyword: 'Welcome to Eleven01',
@@ -39,7 +41,8 @@ class Landing extends React.Component {
       timestamp: 'Mon, Sep 16, 2019 12:15 PM',
       nonce: '6521',
       keywordChanged: false,
-      previous_hashChanged: false
+      previous_hashChanged: false,
+      newBlockOnError: false
     }],
     slideIndex: 0,
     updateCount: 0
@@ -94,6 +97,12 @@ class Landing extends React.Component {
         nonce: nonce,
         keywordChanged: keywordChanged,
         previous_hashChanged: previous_hashChanged
+      }
+
+      if (this.state.blocks[pre_hash - 1].keywordChanged === true || this.state.blocks[pre_hash - 1].previous_hashChanged === true) {
+        block.newBlockOnError = true
+      } else {
+        block.newBlockOnError = false
       }
 
       await this.setState({
@@ -226,6 +235,7 @@ class Landing extends React.Component {
 
     block[pre_hash - 1].keywordChanged = keywordChanged
     block[pre_hash - 1].previous_hashChanged = previous_hashChanged
+    block[pre_hash - 1].newBlockOnError = false
     
 
     const cache = {
@@ -235,7 +245,8 @@ class Landing extends React.Component {
       timestamp: timestamp,
       nonce: nonce,
       keywordChanged: keywordChanged,
-      previous_hashChanged: previous_hashChanged
+      previous_hashChanged: previous_hashChanged,
+      newBlockOnError: false
     }
 
     cache_block[pre_hash - 1].keyword = block[pre_hash - 1].keyword
@@ -245,6 +256,7 @@ class Landing extends React.Component {
     cache_block[pre_hash - 1].nonce = nonce
     cache_block[pre_hash - 1].keywordChanged = keywordChanged
     cache_block[pre_hash - 1].previous_hashChanged = previous_hashChanged
+    cache_block[pre_hash - 1].newBlockOnError = false
 
     await this.setState({
       block: block,
@@ -286,28 +298,45 @@ class Landing extends React.Component {
           block[i].previous_hashChanged = cache_blocks[i].previous_hashChanged
         } else {
           console.log('ye', i)
-          if (block[i + 1].keywordChanged === true) {
-            console.log('equal')
-            const hash2 = crypto.createHash('sha256')
-              .update(i + block[i].previous_hash + block[i].timestamp + block[i].hash + block[i].nonce)
-              .digest('hex');
-            block[i+1].hash = hash2
-            block[i+1].keywordChanged = true
-            block[i+1].previous_hashChanged = false 
-          } else if (block[i].keywordChanged === false) {
-            console.log('not', block[i - 1].keywordChanged)
-            block[i].hash = cache_blocks[i].hash
-            block[i].keywordChanged = false
-            block[i].previous_hashChanged = false
-          }
-          block[i].keyword = cache_blocks[i].keyword
-          if (i===0) {
-            block[i].previous_hash = 0
-          } else {
-            block[i].previous_hash = cache_blocks[i - 1].hash
-          }
-          block[i].timestamp = cache_blocks[i].timestamp
-          block[i].nonce = cache_blocks[i].nonce
+          // if (!i > length) {
+            if (block[i].newBlockOnError === true) {
+              console.log('equal')
+              const hash2 = crypto.createHash('sha256')
+                .update(i + block[i].previous_hash + block[i].timestamp + block[i].hash + block[i].nonce)
+                .digest('hex');
+              block[i].hash = hash2
+              block[i].keywordChanged = true
+              if (block[i - 1].keywordChanged === true) {
+                block[i].previous_hashChanged = true 
+              } else {
+                block[i].previous_hashChanged = false 
+              }
+              block[i].keyword = cache_blocks[i].keyword
+              if (i === 0) {
+                block[i].previous_hash = 0
+              } else {
+                block[i].previous_hash = block[i-1].hash
+              }
+              block[i].timestamp = cache_blocks[i].timestamp
+              block[i].nonce = cache_blocks[i].nonce
+
+            } else {
+
+              block[i].hash = cache_blocks[i].hash
+              block[i].keywordChanged = false
+              block[i].previous_hashChanged = false
+              block[i].keyword = cache_blocks[i].keyword
+              if (i === 0) {
+                block[i].previous_hash = 0
+              } else {
+                block[i].previous_hash = cache_blocks[i - 1].hash
+              }
+              block[i].timestamp = cache_blocks[i].timestamp
+              block[i].nonce = cache_blocks[i].nonce
+              
+            }
+          // }
+         
            
         }
       }
@@ -393,6 +422,9 @@ class Landing extends React.Component {
           cache_blocks[this.state.itterationValue + 1].previous_hashChanged = false
         }
 
+        block[this.state.itterationValue + 1].newBlockOnError = false
+        cache_blocks[this.state.itterationValue + 1].newBlockOnError = false
+
         let id = this.state.itterationValue
         if (this.state.itterationValue + 1 === length) {
           id = ''
@@ -428,6 +460,9 @@ class Landing extends React.Component {
         }
         block[i].keywordChanged = true
         cache_blocks[i].keywordChanged = true
+
+        block[i].newBlockOnError = false
+        cache_blocks[i].newBlockOnError = false
 
         await this.setState({
           blocks: block,
