@@ -420,10 +420,10 @@ class Landing extends React.Component {
 
           block[this.state.itterationValue + 1].previous_hashChanged = false
           cache_blocks[this.state.itterationValue + 1].previous_hashChanged = false
-        }
 
-        block[this.state.itterationValue + 1].newBlockOnError = false
-        cache_blocks[this.state.itterationValue + 1].newBlockOnError = false
+          block[this.state.itterationValue + 1].newBlockOnError = false
+          cache_blocks[this.state.itterationValue + 1].newBlockOnError = false
+        }
 
         let id = this.state.itterationValue
         if (this.state.itterationValue + 1 === length) {

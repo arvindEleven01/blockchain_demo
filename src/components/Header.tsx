@@ -29,26 +29,10 @@ class Header extends Component<Props, State> {
           content: (
             <div>
               <h2>Blockchain Demo</h2>
-              <p>A blockchain is a distributed database secured by cryptography. It is the technology behind Bitcoin.</p>
-              <p>This demo will guide you through the blockchain step-by-step. This demo is also covered in this Medium article with freeCodeCamp. For an understanding of cryptocurrency transactions, checkout Coin Demo.</p>
-              <p>To jump between steps, hover on the title of this dialog and select a step.</p>
-            </div>
-          ),
-        },
-        {
-          target: '.navbar-brand',
-          disableBeacon: true,
-          floaterProps: {
-            disableAnimation: true
-          },
-          content: (
-            <div>
-              <h2>What's New </h2>
-              <ul>
-                <li>15+ New Topics & Explanations</li>
-                <li>Revamped Interface</li>
-                <li>Source Code</li>
-              </ul>
+              <p>A Blockchain Technology is a distibuted database secured by cryptography. It is the technology behind Eleven01.</p>
+              <p>Eleven01 is one of the fastest, highly scalable blockchain protocol which aims to make blockchain technologies ready for real world use.</p>
+              <p>This Interactive demo will guide you through step by step procedure on Eleven01 Blockchain protocol.</p>
+              <p>After completion of this demo, you will be able to create several blocks on Eleven01.</p>
             </div>
           ),
         },
@@ -57,8 +41,9 @@ class Header extends Component<Props, State> {
           content: (
             <div>
               <h2>Blockchain</h2>
-              <p>A blockchain has a list of blocks.</p>
-              <p>It starts with a single block, called the genesis block.</p>
+              <p>A blockchain has list of blocks.</p>
+              <p>Eleven01 Blockchain starts with a single block called Genesis Block.</p>
+              <p>Genesis Block is the foundation on which additional blocks are sequentially added to form a chain of blocks. This block is also referred as Block Zero.</p>
             </div>
           ),
           floaterProps: {
@@ -73,6 +58,14 @@ class Header extends Component<Props, State> {
             <div>
               <h2>Block</h2>
               <p>Each block stores the following information:</p>
+              <ul>
+                <li><i className="fa fa-tag"></i>Index</li>
+                <li><i className="fa fa-calendar-alt"></i>Timestamp</li>
+                <li><i className="fa fa-barcode"></i>Hash</li>
+                <li><i className="fa fa-step-backward"></i>Previous Hash</li>
+                <li><i className="fa fa-file-alt"></i>Data</li>
+                <li><i className="fa fa-file-alt"></i>Nonce</li>
+              </ul>
             </div>
           ),
           floaterProps: {
@@ -85,9 +78,9 @@ class Header extends Component<Props, State> {
           target: '.genesis',
           content: (
             <div>
-              <h2>Index</h2>
-              <p>The index is the position of the block in the chain.</p>
-              <p>The genesis block has an index of 0. The next block will have an index of 1.</p>
+              <h2>Block Height Number</h2>
+              <p>This index represents the position of the block in the chain. This number is known as Block Height Number. Block height number is always a positive integer greater than zero.</p>
+              <p>The genesis block is also referred to as block zero. The second block to be added on top of block zero would then be referred to as block number 1.</p>
             </div>
           ),
           floaterProps: {
@@ -105,8 +98,7 @@ class Header extends Component<Props, State> {
           content: (
             <div>
               <h2>Timestamp</h2>
-              <p>A record of when the block was created.</p>
-              <p>The timestamp helps to keep the blockchain in order.</p>
+              <p>A record when the block was created. It mainly helps to maintain the ordering of the blockchain.</p>
             </div>
           ),
           disableBeacon: true,
@@ -124,12 +116,12 @@ class Header extends Component<Props, State> {
 
               <h3>Properties of a hash:</h3>
               <ul>
-                <li>Hash has a fixed length.</li>
-                <li>Same data always maps to same hash.</li>
-                <li>Different data always maps to a different hash (within practical limitations).</li>
-                <li>Is easy to compute.</li>
-                <li>Is infeasible to convert hash to data.</li>
-                <li>A small change in data leads to a large change in hash.</li>
+                <li>- Hash has a fixed length.</li>
+                <li><i className="fa fa-barcode"></i>Same data always maps to same hash.</li>
+                <li><i className="fa fa-qrcode"></i>Different data always maps to a different hash (within practical limitations).</li>
+                <li><i className="fa fa-qrcode"></i>Is easy to compute.</li>
+                <li><i className="fa fa-lock"></i>Is infeasible to convert hash to data.</li>
+                <li><i className="fa fa-arrow-up"></i>A small change in data leads to a large change in hash.</li>
               </ul>
             </div>
           ),
@@ -144,8 +136,9 @@ class Header extends Component<Props, State> {
           content: (
             <div>
               <h2>Valid Hash</h2>
-              <p>A valid hash for a blockchain is a hash that meets a certain requirement. For this blockchain, having three zeros at the beginning of the hash is the requirement for a valid hash.</p>
-              <p>The number of leading zeros required is the difficulty.</p>
+              <p>Hash is considered as a digital fingerprint of entire block.</p>
+              <p>Having three leading zeros at the beginnning of the hash is considered as a Valid Hash for Eleven01 Blockchain Protocol.</p>
+              <p>The requirement of the number of leading zeros is called as difficulty of the block. Each blockchain has its own difficulty value</p>
             </div>
           ),
           disableBeacon: true,
@@ -159,12 +152,10 @@ class Header extends Component<Props, State> {
           content: (
             <div>
               <h2>Block Hash Calculation</h2>
-              <p>A hashing function takes data as input, and returns a unique hash</p>
-              <p>f ( data ) = hash</p>
-              <p>Since the hash is a "digital fingerprint" of the entire block, the data is the combination of index, timestamp, previous hash, block data, and nonce.</p>
-              <p>f ( index + previous hash + timestamp + data + nonce ) = hash</p>
-              <p>Replace the values for our genesis block, we get:</p>
-              <p>f ( 0 + "0" + 1508270000000 + "Welcome to Blockchain Demo 2.0!" + 604 ) = <br/> 000dc75a315c77a1f9c98fb6247d03dd18ac52632d7dc6a9920261d8109b37cf</p>
+              <p>Hashing function takes an input string of any length and produces an unique output of fixed length resulting in an unique hash.</p>
+              <p>Hashing function f (data) = hash</p>
+              <p>Data in the hashing function is combination of index, timestamp, previous hash, block data and nonce.</p>
+              <p>f (index + previous hash + timestamp + data + nonce) = hash</p>
             </div>
           ),
           disableBeacon: true,
@@ -178,8 +169,9 @@ class Header extends Component<Props, State> {
           content: (
             <div>
               <h2>Previous Hash</h2>
-              <p>The previous hash is the hash of the previous block</p>
-              <p>The genesis block's previous hash is "0" because there is no previous block.</p>
+              <p>Previous Hash is also know as Parent Hash.</p>
+              <p>The previous hash is the hash of the previous block. Without this component, there will be no connection and chronology between each block.</p>
+              <p>As Genesis Block is the first block in Eleven01 blockchain, the previous hash is "0".</p>
             </div>
           ),
           disableBeacon: true,
@@ -194,7 +186,7 @@ class Header extends Component<Props, State> {
             <div>
               <h2>Data</h2>
               <p>Each block can store data against it.</p>
-              <p>In cryptocurrencies such as Bitcoin, the data would include money transactions.</p>
+              <p>Data includes series of transactions which also includes money transactions.</p>
             </div>
           ),
           disableBeacon: true,
@@ -208,8 +200,8 @@ class Header extends Component<Props, State> {
           content: (
             <div>
               <h2>Nonce</h2>
-              <p>The nonce is the number used to find a valid hash.</p>
-              <p>To find a valid hash, we need to find a nonce value that will produce a valid hash when used with the rest of the information from that block.</p>
+              <p>Nonce, also referred as "Number only used once" is the number used to find valid hash.</p>
+              <p>This number is added to the hashed block in the blockchain, which when rehashed meets the difficulty level of leading three zeros for valid hash.</p>
             </div>
           ),
           disableBeacon: true,
@@ -241,9 +233,8 @@ class Header extends Component<Props, State> {
           content: (
             <div>
               <h2>Data Mutation</h2>
-              <p>Edit the "Welcome to Eleven01" input!</p>
-              <p>Since data is an input variable for the hash, changing the data will change the hash.</p>
-              <p>The new hash will not have three leading zeros, and therefore becomes invalid.</p>
+              <p>Lets try to edit the Data input here.</p>
+              <p>When you change the data, hash gets automatically changed to invalid hash (With no leading three zeros).</p>
             </div>
           ),
           disableBeacon: true,
@@ -257,11 +248,10 @@ class Header extends Component<Props, State> {
           content: (
             <div>
               <h2>Mutation Effect</h2>
-              <p>Subsequent blocks will also be invalid.</p>
-              <p>A hash change will cause a mutation in the previous hash of subsequent blocks. Since previous hash is used to calculate the hash, subsequent hashes will also change.</p>
-              <p>This will lead to a cascading invalidation of blocks.</p>
-              <p>Try it yourself:</p>
-              <p>Add 3 blocks, then mutate the genesis block input.</p>
+              <p>As new hash is generated, all the subsequent blocks becomes invalid.</p>
+              <p>Hash Change will cause a mutation in the previous hash of all the subsequent blocks, since previous hash is used to generate each block hash.</p>
+              <p>Hence, this leads to a cascading invalidation of blocks.</p>
+              <p>Lets try to demonstrate by ourself by adding two blocks and then try to change the Genesis Data.</p>
             </div>
           ),
           disableBeacon: true,
@@ -275,7 +265,7 @@ class Header extends Component<Props, State> {
           content: (
             <div>
               <h2>Adding A New Block</h2>
-              <p>To mine another block to the blockchain, fill out the data input and click the button.</p>
+              <p>To add new block to Eleven01 blockchain, click on the Add New Block Button and then fill the data input of the block.</p>
             </div>
           ),
           disableBeacon: true,
@@ -289,12 +279,13 @@ class Header extends Component<Props, State> {
           content: (
             <div>
               <h2>Adding Valid Block</h2>
-              <p>When adding a new block to the blockchain, the new block needs to meet these requirements.</p>
-              <p>Block index one greater than latest block index.</p>
-              <p>Block previous hash equal to latest block hash.</p>
-              <p>Block hash meets difficulty requirement.</p>
-              <p>Block hash is correctly calculated.</p>
-              <p>Other peers on the network will be adding blocks to the blockchain, so new blocks need to be validated.</p>
+              <p>When adding a new block to Eleven01 Blockchain, the new block needs to meet these requirements:</p>
+              <ul>
+                <li>1. Block Height Number must be greater than the last Block Height number</li>
+                <li>2. Previous Hash is same as the latest block hash</li>
+                <li>3. Block Hash should meet difficulty (three leading zeros) requirement</li>
+                <li>4. Hash calculated using Nonce should be valid</li>
+              </ul>
             </div>
           ),
           disableBeacon: true,
