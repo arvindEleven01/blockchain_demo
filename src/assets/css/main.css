@@ -34,7 +34,7 @@ header .navbar {
 
 .main-content {
   /*display: flex; align-items: center; justify-content: center;*/
-  min-height: calc(100vh - 178px);
+  min-height: calc(100vh - 158px);
   padding: 15px 0px;
 }
 
@@ -478,19 +478,19 @@ body.stop-overflow {
   margin-bottom: 9px;
 }
 
-.__floater__body {
+/* .__floater__body {
   max-width: 40%;
   width: auto;
   margin: auto !important;
-}
+} */
 
 .__floater__body h2 {
   margin-top: -8px !important;
 }
 
-.react-joyride__tooltip {
+/* .react-joyride__tooltip {
   width: unset !important;
-}
+} */
 
 polygon {
   fill: #49bea0 !important;
@@ -500,8 +500,12 @@ polygon {
   border: solid 8px #49bea0 !important;
 }
 
-.__floater.__floater__open {
+/* .__floater.__floater__open {
   width: 100% !important
+} */
+
+.overflow-x-hidden {
+  overflow-x: hidden !important
 }
 
 .list-icons {

@@ -26,9 +26,10 @@ class Header extends Component<Props, State> {
           floaterProps: {
             disableAnimation: true
           },
+          placement: 'bottom',
           content: (
             <div>
-              <h2>Blockchain Demo</h2>
+              <h2>Eleven01 Blockchain Demo</h2>
               <p>A Blockchain Technology is a distibuted database secured by cryptography. It is the technology behind Eleven01.</p>
               <p>Eleven01 is one of the fastest, highly scalable blockchain protocol which aims to make blockchain technologies ready for real world use.</p>
               <p>This Interactive demo will guide you through step by step procedure on Eleven01 Blockchain protocol.</p>
@@ -37,7 +38,7 @@ class Header extends Component<Props, State> {
           ),
         },
         {
-          target: '.second',
+          target: '.third',
           content: (
             <div>
               <h2>Blockchain</h2>
@@ -50,7 +51,7 @@ class Header extends Component<Props, State> {
             disableAnimation: true,
           },
           disableBeacon: true,
-          placement: 'top',
+          placement: 'left',
         },
         {
           target: '.third',
@@ -72,7 +73,7 @@ class Header extends Component<Props, State> {
             disableAnimation: true,
           },
           disableBeacon: true,
-          placement: 'top',
+          placement: 'right',
         },
         {
           target: '.genesis',
@@ -105,6 +106,7 @@ class Header extends Component<Props, State> {
           floaterProps: {
             disableAnimation: true,
           },
+          placement: 'top',
         },
         {
           target: '.hash-input',
@@ -129,7 +131,7 @@ class Header extends Component<Props, State> {
           floaterProps: {
             disableAnimation: true,
           },
-          placement: 'top',
+          placement: 'left',
         },
         {
           target: '.hash-input',
