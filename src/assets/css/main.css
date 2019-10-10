@@ -34,8 +34,8 @@ header .navbar {
 
 .main-content {
   /*display: flex; align-items: center; justify-content: center;*/
-  min-height: calc(100vh - 158px);
-  padding: 15px 0px;
+  min-height: calc(100vh - 148px) !important;
+  padding: 10px 0px;
 }
 
 
@@ -555,6 +555,15 @@ ul.list-icons li {
 .react-joyride__tooltip div+div>button {
   color: #fff !important
 }
+
+
+
+.block-item:after{top: 47px !important}
+.myblock {width: 110px !important;  height: 110px !important; line-height: 61px !important}
+footer{ min-height: unset !important; padding: 10px !important; font-size: 13px !important}
+.overlay2{width:104px !important}
+.block-item h6{font-size: 15px !important}
+.box-1{margin:20px 40px 40px}
 
 @media(max-width: 768px) {
   .__floater__body {

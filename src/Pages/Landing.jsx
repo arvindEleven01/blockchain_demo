@@ -525,7 +525,7 @@ class Landing extends React.Component {
           <div className="container">
             <div className="col-sm-12 col-md-12 p-0 mx-auto ">
               <div className="col-md-12 col-lg-12 second">
-                <div className="col-md-12 col-lg-7 third mx-auto text-center border  px-0   box-1 effect5 py-5">
+                <div className="col-md-12 col-lg-6 third mx-auto text-center border  px-0   box-1 effect5 py-5">
                   <div className="px-4">
                     <div>
                       <div className="input-group mb-3">
@@ -630,7 +630,7 @@ class Landing extends React.Component {
               <h4 className="text-center add-new-block-title" >Add New Block<i data-class="tooltip-width" data-tip="To add new block to Eleven01 blockchain, click on the Add New Block Button and then fill the data input of the block." className="fa fa-question-circle ml-1" aria-hidden="true"></i></h4>
             </div>
 
-            <div className="p-5">
+            <div className="pb-3 pt-5">
               <div id="demo" className="carousel slide container no-scroll" data-ride="carousel" data-interval="false" data-wrap="false">
                 <div className="container carousel-inner no-padding ">
                   <div className="carousel-item active">
