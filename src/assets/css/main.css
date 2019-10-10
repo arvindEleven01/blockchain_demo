@@ -505,18 +505,20 @@ polygon {
 } */
 
 .overflow-x-hidden {
-  overflow-x: hidden !important
+  overflow-x: hidden !important;
 }
 
 .list-icons {
   list-style: none;
+  padding-left: 0px;
 }
 
 ul.list-icons li {
   display: inline-block;
   margin: 6px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
+  width: 29% !important;
 }
 
 .list-icons i {
