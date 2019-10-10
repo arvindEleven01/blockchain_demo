@@ -1,4 +1,4 @@
-import React, { Component }  from 'react'
+import React, { Component } from 'react'
 import Joyride, { CallBackProps, STATUS, Step, StoreHelpers } from 'react-joyride';
 import { Link } from "react-router-dom";
 
@@ -58,13 +58,13 @@ class Header extends Component<Props, State> {
             <div>
               <h2>Block</h2>
               <p>Each block stores the following information:</p>
-              <ul>
+              <ul className="list-icons">
                 <li><i className="fa fa-tag"></i>Index</li>
-                <li><i className="fa fa-calendar-alt"></i>Timestamp</li>
+                <li><i className="fa fa-calendar"></i>Timestamp</li>
                 <li><i className="fa fa-barcode"></i>Hash</li>
                 <li><i className="fa fa-step-backward"></i>Previous Hash</li>
-                <li><i className="fa fa-file-alt"></i>Data</li>
-                <li><i className="fa fa-file-alt"></i>Nonce</li>
+                <li><i className="fa fa-file-text-o"></i>Data</li>
+                <li><i className="fa fa-link"></i>Nonce</li>
               </ul>
             </div>
           ),
@@ -109,17 +109,17 @@ class Header extends Component<Props, State> {
         {
           target: '.hash-input',
           content: (
-            <div>
+            <div className="text-left">
               <h2>Hash</h2>
               <p>A hash looks like a bunch of random numbers and letters.</p>
               <p>It is a alphanumeric value that uniquely identifies data, or the "digital fingerprint" of data.</p>
 
-              <h3>Properties of a hash:</h3>
-              <ul>
-                <li>- Hash has a fixed length.</li>
+              <h3 className="text-left">Properties of a hash:</h3>
+              <ul className="list-icons vertical">
+                <li><i className="fa fa-hashtag" aria-hidden="true"></i> Hash has a fixed length.</li>
                 <li><i className="fa fa-barcode"></i>Same data always maps to same hash.</li>
                 <li><i className="fa fa-qrcode"></i>Different data always maps to a different hash (within practical limitations).</li>
-                <li><i className="fa fa-qrcode"></i>Is easy to compute.</li>
+                <li><i className="fa fa-calculator"></i>Is easy to compute.</li>
                 <li><i className="fa fa-lock"></i>Is infeasible to convert hash to data.</li>
                 <li><i className="fa fa-arrow-up"></i>A small change in data leads to a large change in hash.</li>
               </ul>
@@ -280,7 +280,7 @@ class Header extends Component<Props, State> {
             <div>
               <h2>Adding Valid Block</h2>
               <p>When adding a new block to Eleven01 Blockchain, the new block needs to meet these requirements:</p>
-              <ul>
+              <ul className="list-icons">
                 <li>1. Block Height Number must be greater than the last Block Height number</li>
                 <li>2. Previous Hash is same as the latest block hash</li>
                 <li>3. Block Hash should meet difficulty (three leading zeros) requirement</li>
@@ -297,7 +297,7 @@ class Header extends Component<Props, State> {
       ]
     }
   }
-  
+
   getHelpers = (helpers: StoreHelpers) => {
     this.helpers = helpers;
   };
@@ -320,7 +320,7 @@ class Header extends Component<Props, State> {
       } else {
         this.setState({ run: false, endTour: false });
       }
-    } 
+    }
 
     if (data.type === "tour:end") {
       this.setState({
@@ -373,7 +373,7 @@ class Header extends Component<Props, State> {
           </Link>
         </div>
         <div className="text-center">
-          <Link to="" className="navbar-brand" href="#"><img src={require("../assets/images/eleven01.png")} alt=''/></Link>
+          <Link to="" className="navbar-brand" href="#"><img src={require("../assets/images/eleven01.png")} alt='' /></Link>
         </div>
       </header>
     )
