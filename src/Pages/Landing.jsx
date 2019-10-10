@@ -59,19 +59,6 @@ class Landing extends React.Component {
     const pre_hash = this.state.blocks.length
 
     if (this.state.blockNumberMined === '') {
-      // const previousBlock = [...this.state.blocks]
-      // previousBlock[this.state.blocks.length - 1].keyword = this.state.cache.keyword
-      // previousBlock[this.state.blocks.length - 1].previous_hash = this.state.cache.previous_hash
-      // previousBlock[this.state.blocks.length - 1].hash = this.state.cache.hash
-      // previousBlock[this.state.blocks.length - 1].timestamp = this.state.cache.timestamp
-      // previousBlock[this.state.blocks.length - 1].nonce = this.state.cache.nonce
-      // previousBlock[this.state.blocks.length - 1].keywordChanged = this.state.cache.keywordChanged
-      // previousBlock[this.state.blocks.length - 1].previous_hashChanged = this.state.cache.previous_hashChanged
-
-      // await this.setState({
-      //   blocks: previousBlock,
-      //   blockNumberMined: ''
-      // })
       
       const pre_hash = this.state.blocks.length
 
@@ -123,7 +110,6 @@ class Landing extends React.Component {
         },
         keyword: ''
       })
-      console.log(this.state.blocks, 'yea')
       await this.slider.slickGoTo(this.state.blocks.length)
 
     } else {
@@ -167,7 +153,6 @@ class Landing extends React.Component {
         keyword: '',
         blockNumberMined: ''
       })
-      console.log(this.state.blocks, 'not')
     }
   }
 
@@ -238,7 +223,6 @@ class Landing extends React.Component {
     block[pre_hash - 1].previous_hashChanged = previous_hashChanged
     block[pre_hash - 1].newBlockOnError = false
     
-
     const cache = {
       keyword: block[pre_hash - 1].keyword,
       previous_hash: this.state.blocks[pre_hash - 1].previous_hash,
@@ -280,12 +264,10 @@ class Landing extends React.Component {
     const length = this.state.blocks.length
     const timestamp = moment().format('llll');
     if (event.target.value === this.state.previous_keyword) {
-      console.log('on update', this.state.itterationValue)
       const block = JSON.parse(JSON.stringify(this.state.blocks))
       const cache_blocks = JSON.parse(JSON.stringify(this.state.cache_blocks))
       for (let i = this.state.itterationValue; i < length; i++) {
         if (i === this.state.itterationValue) {
-          console.log('i',i)
           block[i].keyword = cache_blocks[i].keyword
           block[i].hash = cache_blocks[i].hash
           if (i === 0) {
@@ -298,53 +280,45 @@ class Landing extends React.Component {
           block[i].keywordChanged = cache_blocks[i].keywordChanged
           block[i].previous_hashChanged = cache_blocks[i].previous_hashChanged
         } else {
-          console.log('ye', i)
-          // if (!i > length) {
-            if (block[i].newBlockOnError === true) {
-              console.log('equal')
-              const hash2 = crypto.createHash('sha256')
-                .update(i + block[i].previous_hash + block[i].timestamp + block[i].hash + block[i].nonce)
-                .digest('hex');
-              block[i].hash = hash2
-              block[i].keywordChanged = true
-              if (block[i - 1].keywordChanged === true) {
-                block[i].previous_hashChanged = true 
-              } else {
-                block[i].previous_hashChanged = false 
-              }
-              block[i].keyword = cache_blocks[i].keyword
-              if (i === 0) {
-                block[i].previous_hash = 0
-              } else {
-                block[i].previous_hash = block[i-1].hash
-              }
-              block[i].timestamp = cache_blocks[i].timestamp
-              block[i].nonce = cache_blocks[i].nonce
-
+          if (block[i].newBlockOnError === true) {
+            const hash2 = crypto.createHash('sha256')
+              .update(i + block[i].previous_hash + block[i].timestamp + block[i].hash + block[i].nonce)
+              .digest('hex');
+            block[i].hash = hash2
+            block[i].keywordChanged = true
+            if (block[i - 1].keywordChanged === true) {
+              block[i].previous_hashChanged = true 
             } else {
-
-              block[i].hash = cache_blocks[i].hash
-              block[i].keywordChanged = false
-              block[i].previous_hashChanged = false
-              block[i].keyword = cache_blocks[i].keyword
-              if (i === 0) {
-                block[i].previous_hash = 0
-              } else {
-                block[i].previous_hash = cache_blocks[i - 1].hash
-              }
-              block[i].timestamp = cache_blocks[i].timestamp
-              block[i].nonce = cache_blocks[i].nonce
-              
+              block[i].previous_hashChanged = false 
             }
-          // }
-         
-           
+            block[i].keyword = cache_blocks[i].keyword
+            if (i === 0) {
+              block[i].previous_hash = 0
+            } else {
+              block[i].previous_hash = block[i-1].hash
+            }
+            block[i].timestamp = cache_blocks[i].timestamp
+            block[i].nonce = cache_blocks[i].nonce
+
+          } else {
+
+            block[i].hash = cache_blocks[i].hash
+            block[i].keywordChanged = false
+            block[i].previous_hashChanged = false
+            block[i].keyword = cache_blocks[i].keyword
+            if (i === 0) {
+              block[i].previous_hash = 0
+            } else {
+              block[i].previous_hash = cache_blocks[i - 1].hash
+            }
+            block[i].timestamp = cache_blocks[i].timestamp
+            block[i].nonce = cache_blocks[i].nonce
+          }
         }
       }
       await this.setState({
         blocks: block
       })
-      console.log(this.state.blocks)
     } else {
       const block = JSON.parse(JSON.stringify(this.state.blocks))
       const cache_blocks = JSON.parse(JSON.stringify(this.state.cache_blocks))
@@ -374,7 +348,6 @@ class Landing extends React.Component {
       await this.setState({
         blocks: block
       })
-      console.log(this.state.blocks)
     }
   }
 
@@ -473,7 +446,7 @@ class Landing extends React.Component {
     }
   }
 
-  render()   {
+  render() {
     const settings = {
       dots: false,
       infinite: false,
@@ -489,7 +462,7 @@ class Landing extends React.Component {
       return (
         <div className={
           i === 0 ?
-            "col-xs-3 col-sm-3 col-md-2 block-item no-chain "
+            "col-xs-3 col-sm-3 col-md-2 block-item no-chain"
             :
             block.previous_hashChanged === true && block.keywordChanged === true ?
               "col-xs-3 col-sm-3 col-md-2 block-item errorschain"
@@ -540,7 +513,7 @@ class Landing extends React.Component {
                         <i className="fa fa-question-circle ml-1 mt-2" data-class="tooltip-width" data-tip="Data includes series of transactions which also includes money transactions." aria-hidden="true"></i>
                       </div>
                       <div className="input-group mb-3 previous-hash-information">
-                        <i className="fa fa-question-circle mr-1 mt-1" aria-hidden="true" data-class="tooltip-width" data-tip="The previous hash is the hash of the previous block. Without this component, there will be no connection and chronology between each block."></i>
+                        <i className="fa fa-question-circle mr-1 mt-1" aria-hidden="true" data-class="tooltip-width" data-tip="The previous hash is the hash of the previous block."></i>
                         PREVIOUS HASH: &nbsp;
                         <span id="previous-hash" className={
                           this.state.blocks[this.state.blocks.length - 1].previous_hashChanged ?
@@ -573,7 +546,7 @@ class Landing extends React.Component {
                           aria-describedby="button-addon1"
                           value={this.state.blocks[this.state.blocks.length - 1].hash}
                         />
-                        <i className="fa fa-question-circle ml-1 mt-2" data-class="tooltip-width" data-tip="Hashing function takes an input string of any length and produces an unique output of fixed length resulting in an unique hash." aria-hidden="true"></i>
+                        <i className="fa fa-question-circle ml-1 mt-2" data-class="tooltip-width" data-tip="This Hash represents the hash of the data entered in the above data field." aria-hidden="true"></i>
                       </div>
                       <div className="row">
                         <div className="col-md-9 text-left">
@@ -627,7 +600,7 @@ class Landing extends React.Component {
               </div>
             </div>
             <div className="col-md-12 col-lg-6 mx-auto ">
-              <h4 className="text-center add-new-block-title" >Add New Block<i data-class="tooltip-width" data-tip="To add new block to Eleven01 blockchain, click on the Add New Block Button and then fill the data input of the block." className="fa fa-question-circle ml-1" aria-hidden="true"></i></h4>
+              <h4 className="text-center add-new-block-title" >Add New Block<i data-class="tooltip-width" data-tip="On clicking this a new block will be added to Eleven01 blockchain." className="fa fa-question-circle ml-1" aria-hidden="true"></i></h4>
             </div>
 
             <div className="pb-3 pt-5">

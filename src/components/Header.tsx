@@ -358,7 +358,6 @@ class Header extends Component<Props, State> {
               overlayColor: "rgba(0, 0, 0, 0.4)",
               primaryColor: "mediumaquamarine",
               textColor: "#333",
-              // width: 500,
               zIndex: 10000
             }
           }}
