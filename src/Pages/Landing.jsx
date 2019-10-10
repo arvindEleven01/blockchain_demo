@@ -579,10 +579,11 @@ class Landing extends React.Component {
                             </div>
                             :
                             <div className="col-md-3">
-                              <div className="block-view-content nonce-block">
+                              <i className="fa fa-question-circle ml-1 pull-right mt-2" data-class="tooltip-width" data-tip="Nonce, also referred as 'Number only used once' is the number used to find valid hash." aria-hidden="true"></i>
+                              <div className="block-view-content nonce-block pull-right"  >
                                 {this.state.blocks[this.state.blocks.length - 1].nonce}
                               </div>
-                              <i className="fa fa-question-circle mr-1 pull-right mt-2" data-class="tooltip-width" data-tip="Nonce, also referred as 'Number only used once' is the number used to find valid hash." aria-hidden="true"></i>
+                              
                             </div>
                         }
                       </div>
