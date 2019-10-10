@@ -537,10 +537,10 @@ class Landing extends React.Component {
                           aria-label="Example text with button addon" aria-describedby="button-addon1"
                           name="keyword" onChange={this.handleChange} value={this.state.blocks[this.state.blocks.length - 1].keyword}
                         />
-                        <i class="fa fa-question-circle ml-1" data-tip="Data includes series of transactions which also includes money transactions." aria-hidden="true"></i>
+                        <i className="fa fa-question-circle ml-1" data-class="tooltip-width" data-tip="Data includes series of transactions which also includes money transactions." aria-hidden="true"></i>
                       </div>
                       <div className="input-group mb-3 previous-hash-information">
-                        <i class="fa fa-question-circle mr-1" aria-hidden="true" data-tip="The previous hash is the hash of the previous block. Without this component, there will be no connection and chronology between each block."></i>
+                        <i className="fa fa-question-circle mr-1" aria-hidden="true" data-class="tooltip-width" data-tip="The previous hash is the hash of the previous block. Without this component, there will be no connection and chronology between each block."></i>
                         PREVIOUS HASH: &nbsp;
                         <span id="previous-hash" className={
                           this.state.blocks[this.state.blocks.length - 1].previous_hashChanged ?
@@ -573,11 +573,11 @@ class Landing extends React.Component {
                           aria-describedby="button-addon1"
                           value={this.state.blocks[this.state.blocks.length - 1].hash}
                         />
-                        <i class="fa fa-question-circle ml-1" data-tip="Hashing function takes an input string of any length and produces an unique output of fixed length resulting in an unique hash." aria-hidden="true"></i>
+                        <i className="fa fa-question-circle ml-1" data-class="tooltip-width" data-tip="Hashing function takes an input string of any length and produces an unique output of fixed length resulting in an unique hash." aria-hidden="true"></i>
                       </div>
                       <div className="row">
                         <div className="col-md-9 text-left">
-                          <i class="fa fa-question-circle mr-1" data-tip="This index represents the position of the block in the chain. This number is known as Block Height Number. Block height number is always a positive integer greater than zero." aria-hidden="true"></i>
+                          <i className="fa fa-question-circle mr-1" data-class="tooltip-width" data-tip="This index represents the position of the block in the chain. This number is known as Block Height Number. Block height number is always a positive integer greater than zero." aria-hidden="true"></i>
                           <h4 className="mb-0 line-height genesis">
                             {
                               this.state.blocks.length === 1 ?
@@ -591,7 +591,7 @@ class Landing extends React.Component {
                               on {this.state.blocks[this.state.blocks.length - 1].timestamp}
                             </span>
                           </span>
-                          <i class="fa fa-question-circle ml-1" data-tip="A record when the block was created. It mainly helps to maintain the ordering of the blockchain." aria-hidden="true"></i>
+                          <i className="fa fa-question-circle ml-1" data-class="tooltip-width" data-tip="A record when the block was created. It mainly helps to maintain the ordering of the blockchain." aria-hidden="true"></i>
                         </div>
                         {
                           this.state.blocks[this.state.blocks.length - 1].keywordChanged ?
@@ -600,7 +600,7 @@ class Landing extends React.Component {
                                 <Link to="#" onClick={this.mine}>
                                   <i className="fa fa-link mine-link"></i>
                                 </Link>
-                                <i class="fa fa-question-circle ml-1	" aria-hidden="true"></i>
+                                <i className="fa fa-question-circle ml-1" data-class="tooltip-width" data-tip="Nonce, also referred as 'Number only used once' is the number used to find valid hash." aria-hidden="true"></i>
 
                               </div>
                             </div>
@@ -609,7 +609,7 @@ class Landing extends React.Component {
                               <div className="block-view-content nonce-block">
                                 {this.state.blocks[this.state.blocks.length - 1].nonce}
                               </div>
-                              <i class="fa fa-question-circle ml-1" data-tip="Nonce, also referred as 'Number only used once' is the number used to find valid hash." aria-hidden="true"></i>
+                              <i className="fa fa-question-circle ml-1" data-class="tooltip-width" data-tip="Nonce, also referred as 'Number only used once' is the number used to find valid hash." aria-hidden="true"></i>
                             </div>
                         }
                       </div>
@@ -627,7 +627,7 @@ class Landing extends React.Component {
               </div>
             </div>
             <div className="col-md-12 col-lg-6 mx-auto ">
-              <h4 className="text-center add-new-block-title" >Add New Block <i data-tip="To add new block to Eleven01 blockchain, click on the Add New Block Button and then fill the data input of the block." class="fa fa-question-circle ml-1" aria-hidden="true"></i></h4>
+              <h4 className="text-center add-new-block-title" >Add New Block <i data-class="tooltip-width" data-tip="To add new block to Eleven01 blockchain, click on the Add New Block Button and then fill the data input of the block." className="fa fa-question-circle ml-1" aria-hidden="true"></i></h4>
             </div>
 
             <div className="p-5">

@@ -949,3 +949,12 @@ body.overflow-hidden {
 .__floater__body img {
   width: 100%
 }
+
+.tooltip-width{
+width: 25% !important;
+text-align: center
+}
+
+.box-1 .fa-question-circle {
+  color: #ccc;
+}
