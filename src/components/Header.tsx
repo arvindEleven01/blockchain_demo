@@ -42,7 +42,7 @@ class Header extends Component<Props, State> {
           content: (
             <div>
               <h2>Blockchain</h2>
-              <p>A blockchain has list of blocks.</p>
+              <p>A Blockchain is a chain of blocks.</p>
               <p>Eleven01 Blockchain starts with a single block called Genesis Block.</p>
               <p>Genesis Block is the foundation on which additional blocks are sequentially added to form a chain of blocks. This block is also referred as Block Zero.</p>
             </div>
@@ -60,7 +60,7 @@ class Header extends Component<Props, State> {
               <h2>Block</h2>
               <p>Each block stores the following information:</p>
               <ul className="list-icons">
-                <li><i className="fa fa-tag"></i>Index</li>
+                <li><i className="fa fa-tag"></i>Block Height Number</li>
                 <li><i className="fa fa-calendar"></i>Timestamp</li>
                 <li><i className="fa fa-barcode"></i>Hash</li>
                 <li><i className="fa fa-step-backward"></i>Previous Hash</li>
@@ -141,6 +141,8 @@ class Header extends Component<Props, State> {
               <p>Hash is considered as a digital fingerprint of entire block.</p>
               <p>Having three leading zeros at the beginnning of the hash is considered as a Valid Hash for Eleven01 Blockchain Protocol.</p>
               <p>The requirement of the number of leading zeros is called as difficulty of the block. Each blockchain has its own difficulty value</p>
+              <img src={require("../assets/images/hash_error.PNG")} alt="" />
+              <p>The above represents invalid hash, as it does not follow difficulty level of the Eleven01 Blockchain</p>
             </div>
           ),
           disableBeacon: true,
