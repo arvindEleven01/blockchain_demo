@@ -376,7 +376,7 @@ class Header extends Component<Props, State> {
           </Link>
         </div>
         <div className="text-center">
-          <Link to="" className="navbar-brand" href="#"><img src={require("../assets/images/eleven01.png")} alt='' /></Link>
+          <Link to="" onClick={() => window.location.reload()} className="navbar-brand"><img src={require("../assets/images/eleven01.png")} alt='' /></Link>
         </div>
       </header>
     )

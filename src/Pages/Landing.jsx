@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import Layout from '../components/Layout'
 import crypto from 'crypto';
 import * as moment from 'moment';
@@ -460,34 +460,36 @@ class Landing extends React.Component {
 
     let blocks = this.state.blocks.map((block, i) => {
       return (
-        <div className={
-          i === 0 ?
-            "col-xs-3 col-sm-3 col-md-2 block-item no-chain"
-            :
-            block.previous_hashChanged === true && block.keywordChanged === true ?
-              "col-xs-3 col-sm-3 col-md-2 block-item errorschain"
-              :
-              "col-xs-3 col-sm-3 col-md-2 block-item"
-        }
-          key={i} data-toggle="modal"
-          onClick={() => this.setItteration(i)} data-backdrop="static" data-keyboard="false" data-target={"#myModal-" + this.state.itterationValue}>
-          
+        <Fragment>
           <div className={
-            block.keywordChanged === true ?
-              "myblock errors"
-              :
-              "myblock"
-          }>
-            <img src={require("../assets/images/block-3d-1.png")} alt="" />
-            <div className="overlay2"><i className="fa fa-info"></i></div>
-          </div>
-          {
             i === 0 ?
-              <h6>GENESIS BLOCK </h6>
-            :
-              <h6>BLOCK #{i}</h6>
+              "col-xs-3 col-sm-3 col-md-2 block-item desktop-blocks-design no-chain"
+              :
+              block.previous_hashChanged === true && block.keywordChanged === true ?
+                "col-xs-3 col-sm-3 col-md-2 block-item desktop-blocks-design errorschain"
+                :
+                "col-xs-3 col-sm-3 col-md-2 block-item desktop-blocks-design"
           }
-        </div>
+            key={i} data-toggle="modal"
+            onClick={() => this.setItteration(i)} data-backdrop="static" data-keyboard="false" data-target={"#myModal-" + this.state.itterationValue}>
+            
+            <div className={
+              block.keywordChanged === true ?
+                "myblock errors"
+                :
+                "myblock"
+            }>
+              <img src={require("../assets/images/block-3d-1.png")} alt="" />
+              <div className="overlay2"><i className="fa fa-info"></i></div>
+            </div>
+            {
+              i === 0 ?
+                <h6>GENESIS BLOCK </h6>
+              :
+                <h6>BLOCK #{i}</h6>
+            }
+          </div>
+        </Fragment>
       )
     })
     
@@ -619,6 +621,43 @@ class Landing extends React.Component {
                 <Link className="carousel-control-next" to="#demo" data-slide="next">
                   <span className="carousel-control-next-icon"></span>
                 </Link>
+              </div>
+            </div>
+            <div class="mobile-blocks-design">
+              <div class="table-responsive mx-auto col-md-5">
+                <table class="table table-striped table-bordered">
+                  <thead>
+                    <tr>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {
+                      this.state.blocks.map((block, i) => {
+                        return (
+                          <tr key={i} data-toggle="modal"
+                            onClick={() => this.setItteration(i)}
+                            data-backdrop="static" data-keyboard="false"
+                            data-target={"#myModal-" + this.state.itterationValue}>
+                            <td>
+                              <Link to="" className={
+                                block.keywordChanged &&
+                                "mobile-myblock-errors"
+                              }>
+                                <img src={require("../assets/images/block-3d-1.png")} alt="" width="20px" class="mr-2" />
+                                {
+                                  i === 0 ?
+                                    <span>GENESIS BLOCK </span>
+                                    :
+                                    <span>BLOCK #{i}</span>
+                                }
+                              </Link>
+                            </td>
+                          </tr>
+                        )
+                      })
+                    }
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>

@@ -83,7 +83,7 @@ h6 {
 }
 
 a {
-  color: #49bea0;
+  color: #49bea0 !important;
 }
 
 a:hover,
@@ -685,6 +685,7 @@ footer{ min-height: unset !important; padding: 10px !important; font-size: 13px 
 #previous-hash {
   font-size: .8em;
   line-height: 21px;
+  word-break: break-all;
 }
 
 
@@ -968,4 +969,30 @@ text-align: center
 
 .box-1 .fa-question-circle {
   color: #ccc;
+}
+
+.mobile-blocks-design {
+  display: none
+}
+
+.desktop-blocks-design {
+  display: block
+}
+
+@media(max-width: 768px) {
+  .mobile-blocks-design {
+    display: block !important;
+  }
+
+  .desktop-blocks-design {
+    display: none !important;
+  }
+}
+
+.mobile-blocks-design .table-responsive a>span {
+  font-size: 13px;
+}
+
+.mobile-myblock-errors {
+  color: red !important;
 }
