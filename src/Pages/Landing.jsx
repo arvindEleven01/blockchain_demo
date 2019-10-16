@@ -213,11 +213,17 @@ class Landing extends React.Component {
 
     let keywordChanged = false
     let previous_hashChanged
-    if (block[pre_hash - 2].keywordChanged === true) {
-      previous_hashChanged = true
-    } else {
+    if (pre_hash - 1 !== 0) {
+      if (block[pre_hash - 2].keywordChanged === true) {
+        previous_hashChanged = true
+      } else {
+        previous_hashChanged = false
+      }
+    }
+    else {
       previous_hashChanged = false
     }
+    
 
     block[pre_hash - 1].keywordChanged = keywordChanged
     block[pre_hash - 1].previous_hashChanged = previous_hashChanged
