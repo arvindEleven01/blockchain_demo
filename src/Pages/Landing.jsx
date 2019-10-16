@@ -261,6 +261,7 @@ class Landing extends React.Component {
   }
 
   updateHash = async (event) => { 
+    console.log(this.state.blocks)
     const length = this.state.blocks.length
     const timestamp = moment().format('llll');
     if (event.target.value === this.state.previous_keyword) {
@@ -268,17 +269,50 @@ class Landing extends React.Component {
       const cache_blocks = JSON.parse(JSON.stringify(this.state.cache_blocks))
       for (let i = this.state.itterationValue; i < length; i++) {
         if (i === this.state.itterationValue) {
-          block[i].keyword = cache_blocks[i].keyword
-          block[i].hash = cache_blocks[i].hash
           if (i === 0) {
-            block[i].previous_hash = 0
+            block[i].keyword = cache_blocks[i].keyword
+            block[i].hash = cache_blocks[i].hash
+            if (i === 0) {
+              block[i].previous_hash = 0
+            } else {
+              block[i].previous_hash = cache_blocks[i - 1].hash
+            }
+            block[i].timestamp = cache_blocks[i].timestamp
+            block[i].nonce = cache_blocks[i].nonce
+            block[i].keywordChanged = cache_blocks[i].keywordChanged
+            block[i].previous_hashChanged = cache_blocks[i].previous_hashChanged
           } else {
-            block[i].previous_hash = cache_blocks[i - 1].hash
+            if (block[i-1].keywordChanged === true) {
+              for (let a = i; a < length; a++) {
+                block[a].keyword = event.target.value
+                const hash2 = crypto.createHash('sha256')
+                  .update(a + block[a].previous_hash + block[a].timestamp + block[a].hash + block[a].nonce)
+                  .digest('hex');
+                block[a].hash = hash2
+                if (block[a - 1].keywordChanged === true) {
+                  block[a].previous_hashChanged = true
+                } else {
+                  block[a].previous_hashChanged = false
+                }
+                block[a].previous_hash = block[a - 1].hash
+              }
+              break;
+            } else {
+              block[i].keyword = cache_blocks[i].keyword
+              block[i].hash = cache_blocks[i].hash
+              if (i === 0) {
+                block[i].previous_hash = 0
+              } else {
+                block[i].previous_hash = cache_blocks[i - 1].hash
+              }
+              block[i].timestamp = cache_blocks[i].timestamp
+              block[i].nonce = cache_blocks[i].nonce
+              block[i].keywordChanged = cache_blocks[i].keywordChanged
+              block[i].previous_hashChanged = cache_blocks[i].previous_hashChanged
+            }
           }
-          block[i].timestamp = cache_blocks[i].timestamp
-          block[i].nonce = cache_blocks[i].nonce
-          block[i].keywordChanged = cache_blocks[i].keywordChanged
-          block[i].previous_hashChanged = cache_blocks[i].previous_hashChanged
+          
+          
         } else {
           if (block[i].newBlockOnError === true) {
             const hash2 = crypto.createHash('sha256')
@@ -301,18 +335,36 @@ class Landing extends React.Component {
             block[i].nonce = cache_blocks[i].nonce
 
           } else {
-
-            block[i].hash = cache_blocks[i].hash
-            block[i].keywordChanged = false
-            block[i].previous_hashChanged = false
-            block[i].keyword = cache_blocks[i].keyword
-            if (i === 0) {
-              block[i].previous_hash = 0
-            } else {
-              block[i].previous_hash = cache_blocks[i - 1].hash
+            if (block[i].keyword === cache_blocks[i].keyword) {
+              block[i].keyword = cache_blocks[i].keyword
+              block[i].hash = cache_blocks[i].hash
+              block[i].keywordChanged = false
+              block[i].previous_hashChanged = false
+              if (i === 0) {
+                block[i].previous_hash = 0
+              } else {
+                block[i].previous_hash = cache_blocks[i - 1].hash
+              }
+              block[i].timestamp = cache_blocks[i].timestamp
+              block[i].nonce = cache_blocks[i].nonce
+              // repeat
+              console.log(i)
+            } 
+            else {
+              for (let a = i; a < length; a++) {
+                const hash2 = crypto.createHash('sha256')
+                  .update(a + block[a].previous_hash + block[a].timestamp + block[a].hash + block[a].nonce)
+                  .digest('hex');
+                block[a].hash = hash2
+                if (block[a-1].keywordChanged === true) {
+                  block[a].previous_hashChanged = true
+                } else {
+                  block[a].previous_hashChanged = false
+                }
+                block[a].previous_hash = block[a - 1].hash
+              }
+              break;
             }
-            block[i].timestamp = cache_blocks[i].timestamp
-            block[i].nonce = cache_blocks[i].nonce
           }
         }
       }
@@ -460,7 +512,7 @@ class Landing extends React.Component {
 
     let blocks = this.state.blocks.map((block, i) => {
       return (
-        <Fragment>
+        <Fragment key={i}>
           <div className={
             i === 0 ?
               "col-xs-3 col-sm-3 col-md-2 block-item desktop-blocks-design no-chain"
@@ -470,7 +522,7 @@ class Landing extends React.Component {
                 :
                 "col-xs-3 col-sm-3 col-md-2 block-item desktop-blocks-design"
           }
-            key={i} data-toggle="modal"
+            data-toggle="modal"
             onClick={() => this.setItteration(i)} data-backdrop="static" data-keyboard="false" data-target={"#myModal-" + this.state.itterationValue}>
             
             <div className={
@@ -623,9 +675,9 @@ class Landing extends React.Component {
                 </Link>
               </div>
             </div>
-            <div class="mobile-blocks-design">
-              <div class="table-responsive mx-auto col-md-5">
-                <table class="table table-striped table-bordered">
+            <div className="mobile-blocks-design">
+              <div className="table-responsive mx-auto col-md-5">
+                <table className="table table-striped table-bordered">
                   <thead>
                     <tr>
                     </tr>
@@ -640,10 +692,12 @@ class Landing extends React.Component {
                             data-target={"#myModal-" + this.state.itterationValue}>
                             <td>
                               <Link to="" className={
-                                block.keywordChanged &&
-                                "mobile-myblock-errors"
+                                block.keywordChanged === true ?
+                                  "mobile-myblock-errors"
+                                  :
+                                  ''
                               }>
-                                <img src={require("../assets/images/block-3d-1.png")} alt="" width="20px" class="mr-2" />
+                                <img src={require("../assets/images/block-3d-1.png")} alt="" width="20px" className="mr-2" />
                                 {
                                   i === 0 ?
                                     <span>GENESIS BLOCK </span>
